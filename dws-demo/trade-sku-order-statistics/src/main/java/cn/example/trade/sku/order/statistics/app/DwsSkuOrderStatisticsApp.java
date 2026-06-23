@@ -7,7 +7,6 @@ import cn.example.common.demo.function.BeanToJsonFunction;
 import cn.example.common.demo.utils.FlinkSinkUtil;
 import cn.example.trade.sku.order.statistics.function.*;
 import cn.example.trade.sku.order.statistics.function.dimension.*;
-import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.streaming.api.datastream.AsyncDataStream;
@@ -39,10 +38,9 @@ public class DwsSkuOrderStatisticsApp extends BaseApp {
                 .process(new LeftJoinDistinctKeyedProcessFunction());
 
         // 2、设置水位线
-        SingleOutputStreamOperator<JSONObject> watermarkDS = kafkaDS.map(JSON::parseObject)
-                .assignTimestampsAndWatermarks(WatermarkStrategy.<JSONObject>forBoundedOutOfOrderness(Duration.ofSeconds(Constant.WATERMARK_DELAY))
-                        .withTimestampAssigner((jsonObj, recordTimestamp) -> jsonObj.getLong("ts") * 1000)
-                        .withIdleness(Duration.ofSeconds(Constant.WATERMARK_IDLE_TIMEOUT)));
+        SingleOutputStreamOperator<JSONObject> watermarkDS = distinctDS.assignTimestampsAndWatermarks(WatermarkStrategy.<JSONObject>forBoundedOutOfOrderness(Duration.ofSeconds(Constant.WATERMARK_DELAY))
+                .withTimestampAssigner((jsonObj, recordTimestamp) -> jsonObj.getLong("ts") * 1000)
+                .withIdleness(Duration.ofSeconds(Constant.WATERMARK_IDLE_TIMEOUT)));
 
         // 3、分组、开窗聚合
         SingleOutputStreamOperator<TradeSkuOrderStatistics> reduceDS = watermarkDS

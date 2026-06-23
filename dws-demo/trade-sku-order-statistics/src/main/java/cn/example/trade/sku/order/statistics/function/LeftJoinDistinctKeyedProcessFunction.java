@@ -38,6 +38,7 @@ public class LeftJoinDistinctKeyedProcessFunction extends KeyedProcessFunction<S
             lastJsonObj.put(Constant.SPLIT_ACTIVITY_AMOUNT, String.format("-%s", splitActivityAmount));
             lastJsonObj.put(Constant.SPLIT_COUPON_AMOUNT, String.format("-%s", splitCouponAmount));
             lastJsonObj.put(Constant.SPLIT_TOTAL_AMOUNT, String.format("-%s", splitTotalAmount));
+            out.collect(lastJsonObj);
         }
         out.collect(jsonObject);
     }
