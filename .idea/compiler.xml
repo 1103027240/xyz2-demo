@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="trade-order-detail" />
+        <module name="trade-sku-order-statistics" />
+        <module name="dim-demo" />
+        <module name="trade-cart-statistics" />
+        <module name="trade-cart" />
+        <module name="common-demo" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="ads-demo" target="17" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="common-demo" options="-parameters" />
+      <module name="dim-demo" options="-parameters" />
+      <module name="dwd-demo" options="" />
+      <module name="dws-demo" options="" />
+      <module name="trade-cart" options="-parameters" />
+      <module name="trade-cart-statistics" options="-parameters" />
+      <module name="trade-order-detail" options="-parameters" />
+      <module name="trade-sku-order-statistics" options="-parameters" />
+    </option>
+  </component>
+</project>
