@@ -97,12 +97,12 @@ public class DwsSkuOrderStatisticsApp extends BaseApp {
                 new Category1AsyncFunction(),
                 120,
                 TimeUnit.SECONDS);
-        category1DS.print("category1DS");
 
         // 10、存储到StarRocks
-        category1DS
-                .map(new BeanToJsonFunction<>())
-                .addSink(FlinkSinkUtil.createStarRocksSink(Constant.DATABASE_DWS, Constant.DWS_TRADE_SKU_ORDER_STATISTICS));
+        SingleOutputStreamOperator<String> jsonDS = category1DS.map(new BeanToJsonFunction<>());
+        jsonDS.print("jsonDS");
+
+        jsonDS.addSink(FlinkSinkUtil.createStarRocksSink(Constant.DATABASE_DWS, Constant.DWS_TRADE_SKU_ORDER_STATISTICS));
 
     }
 

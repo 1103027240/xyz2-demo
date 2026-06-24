@@ -60,6 +60,13 @@ public abstract class DimAsyncFunction<T> extends RichAsyncFunction<T, T> implem
                         addDims(obj, dimJsonObj);
                     }
                     resultFuture.complete(Collections.singleton(obj));
+                })
+                .exceptionally(
+                ex -> {
+                    System.err.println(String.format("~~~维度关联异常，表[%s]，RowKey[%s]~~~", getTableName(), getRowKey(obj)));
+                    ex.printStackTrace();
+                    resultFuture.complete(Collections.singleton(obj));
+                    return null;
                 }
         );
     }
