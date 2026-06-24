@@ -15,7 +15,7 @@ PROPERTIES (
     "dynamic_partition.enable" = "true",
     "dynamic_partition.time_unit" = "DAY",
     "dynamic_partition.start" = "-7",
-    "dynamic_partition.end" = "3",
+    "dynamic_partition.end" = "360",
     "dynamic_partition.prefix" = "p",
     "dynamic_partition.buckets" = "8"
 );
@@ -52,6 +52,30 @@ PROPERTIES (
     "dynamic_partition.time_unit" = "DAY",
     "dynamic_partition.start" = "-7",
     "dynamic_partition.end" = "3",
+    "dynamic_partition.prefix" = "p",
+    "dynamic_partition.buckets" = "8"
+);
+
+-- 交易域省份-订单统计表
+CREATE TABLE IF NOT EXISTS dws.trade_province_order_statistics (
+    dt DATE,
+    window_start DATETIME,
+    window_end DATETIME,
+    province_id VARCHAR,
+    province_name VARCHAR,
+    order_count BIGINT,
+    order_amount DECIMAL(16, 2)
+)
+ENGINE = OLAP
+PRIMARY KEY(dt, window_start, window_end, province_id)
+PARTITION BY RANGE(dt) ()
+DISTRIBUTED BY HASH(province_id) BUCKETS 8
+PROPERTIES (
+    "replication_num" = "3",
+    "dynamic_partition.enable" = "true",
+    "dynamic_partition.time_unit" = "DAY",
+    "dynamic_partition.start" = "-7",
+    "dynamic_partition.end" = "",
     "dynamic_partition.prefix" = "p",
     "dynamic_partition.buckets" = "8"
 );
