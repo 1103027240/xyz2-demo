@@ -95,9 +95,10 @@ public class Constant {
     public static int PARALLELISM = 3;  //Kafka目前是3分区
 
     public static long WATERMARK_DELAY = 3;
-    public static long WATERMARK_IDLE_TIMEOUT = 10;
+    public static long WATERMARK_IDLE_TIMEOUT = 5;
     public static long WINDOW_SIZE = 10;
     public static long WINDOW_EXPIRE_TIMEOUT = 30;
+    public static long WATERMARK_OUT_OF_ORDER = 3;
 
 
     // ==================== StarRocks ====================

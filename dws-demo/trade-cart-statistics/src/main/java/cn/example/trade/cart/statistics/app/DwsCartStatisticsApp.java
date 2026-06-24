@@ -47,6 +47,7 @@ public class DwsCartStatisticsApp extends BaseApp {
                 .keyBy(jsonObj -> jsonObj.getString("user_id"))
                 .process(new CartKeyedProcessFunction())
                 .windowAll(TumblingEventTimeWindows.of(Time.seconds(Constant.WINDOW_SIZE)))
+                .allowedLateness(Time.seconds(Constant.WATERMARK_OUT_OF_ORDER))
                 .aggregate(new CartAggregateFunction(), new CartWindowFunction())
                 .map(new BeanToJsonFunction())
                 .addSink(FlinkSinkUtil.createStarRocksSink(Constant.DATABASE_DWS, Constant.DWS_CART_STATISTICS));

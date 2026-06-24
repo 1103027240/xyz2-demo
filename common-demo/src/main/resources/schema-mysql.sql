@@ -71,9 +71,6 @@ BEGIN
 END //
 DELIMITER ;
 
--- 执行
-CALL InsertCartWithDelay();
-
 -- 2）执行
 CALL InsertCartWithDelay();
 
