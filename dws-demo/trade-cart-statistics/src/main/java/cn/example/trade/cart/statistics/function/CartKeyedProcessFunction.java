@@ -6,6 +6,7 @@ import com.alibaba.fastjson2.JSONObject;
 import org.apache.flink.api.common.state.StateTtlConfig;
 import org.apache.flink.api.common.state.ValueState;
 import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.api.common.time.Time;
 import org.apache.flink.configuration.Configuration;
 import org.apache.flink.streaming.api.functions.KeyedProcessFunction;
 import org.apache.flink.util.Collector;
@@ -17,7 +18,7 @@ public class CartKeyedProcessFunction extends KeyedProcessFunction<String, JSONO
     @Override
     public void open(Configuration parameters) throws Exception {
         ValueStateDescriptor<String> valueStateDescriptor = new ValueStateDescriptor<String>("lastCartDateState", String.class);
-        valueStateDescriptor.enableTimeToLive(StateTtlConfig.newBuilder(org.apache.flink.api.common.time.Time.days(1)).build());
+        valueStateDescriptor.enableTimeToLive(StateTtlConfig.newBuilder(Time.days(1)).build());
         lastCartDateState = getRuntimeContext().getState(valueStateDescriptor);
     }
 
@@ -30,7 +31,7 @@ public class CartKeyedProcessFunction extends KeyedProcessFunction<String, JSONO
         long ts = jsonObject.getLong("ts") * 1000;
         String curCartDate = DateUtil.format(DateUtil.date(ts), "yyyy-MM-dd");
 
-        // 判断是否是加购独立用户
+        // 判断是否是独立加购用户
         if (StrUtil.isBlank(lastCartDate) || !lastCartDate.equals(curCartDate)) {
             out.collect(jsonObject);
             lastCartDateState.update(curCartDate);

@@ -6,8 +6,8 @@ import com.alibaba.fastjson2.JSONObject;
 public class TradeMarkAsyncFunction extends DimAsyncFunction<TradeSkuOrderStatistics> {
 
     @Override
-    public void addDims(TradeSkuOrderStatistics orderBean, JSONObject dimJsonObj) {
-        orderBean.setTrademarkName(dimJsonObj.getString("tm_name"));
+    public void addDims(TradeSkuOrderStatistics skuOrderStatistics, JSONObject dimJsonObj) {
+        skuOrderStatistics.setTrademarkName(dimJsonObj.getString("tm_name"));
     }
 
     @Override
@@ -16,8 +16,8 @@ public class TradeMarkAsyncFunction extends DimAsyncFunction<TradeSkuOrderStatis
     }
 
     @Override
-    public String getRowKey(TradeSkuOrderStatistics orderBean) {
-        return orderBean.getTrademarkId();
+    public String getRowKey(TradeSkuOrderStatistics skuOrderStatistics) {
+        return skuOrderStatistics.getTrademarkId();
     }
 
 }

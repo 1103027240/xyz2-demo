@@ -6,8 +6,9 @@ import com.alibaba.fastjson2.JSONObject;
 public class Category3AsyncFunction extends DimAsyncFunction<TradeSkuOrderStatistics> {
 
     @Override
-    public String getRowKey(TradeSkuOrderStatistics bean) {
-        return bean.getCategory3Id();
+    public void addDims(TradeSkuOrderStatistics skuOrderStatistics, JSONObject dim) {
+        skuOrderStatistics.setCategory3Name(dim.getString("name"));
+        skuOrderStatistics.setCategory2Id(dim.getString("category2_id"));
     }
 
     @Override
@@ -16,9 +17,8 @@ public class Category3AsyncFunction extends DimAsyncFunction<TradeSkuOrderStatis
     }
 
     @Override
-    public void addDims(TradeSkuOrderStatistics bean, JSONObject dim) {
-        bean.setCategory3Name(dim.getString("name"));
-        bean.setCategory2Id(dim.getString("category2_id"));
+    public String getRowKey(TradeSkuOrderStatistics skuOrderStatistics) {
+        return skuOrderStatistics.getCategory3Id();
     }
 
 }

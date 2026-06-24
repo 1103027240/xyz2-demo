@@ -22,7 +22,7 @@ public class LeftJoinDistinctKeyedProcessFunction extends KeyedProcessFunction<S
     @Override
     public void open(Configuration parameters) throws Exception {
         ValueStateDescriptor<JSONObject> valueStateDescriptor = new ValueStateDescriptor<JSONObject>("lastJsonObjState", JSONObject.class);
-        valueStateDescriptor.enableTimeToLive(StateTtlConfig.newBuilder(Time.seconds(Constant.WINDOW_EXPIRE_TIMEOUT)).build());
+        valueStateDescriptor.enableTimeToLive(StateTtlConfig.newBuilder(Time.minutes(Constant.WINDOW_EXPIRE_TIMEOUT)).build());
         lastJsonObjState = getRuntimeContext().getState(valueStateDescriptor);
     }
 

@@ -9,10 +9,12 @@ import org.apache.flink.configuration.Configuration;
 import org.apache.flink.streaming.api.functions.async.ResultFuture;
 import org.apache.flink.streaming.api.functions.async.RichAsyncFunction;
 import org.apache.hadoop.hbase.client.AsyncConnection;
-
 import java.util.Collections;
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * 先从redis缓存获取，如果获取不到，再从HBase获取
+ */
 public abstract class DimAsyncFunction<T> extends RichAsyncFunction<T, T> implements DimJoinFunction<T> {
 
     private AsyncConnection hbaseAsyncConn;
@@ -37,8 +39,8 @@ public abstract class DimAsyncFunction<T> extends RichAsyncFunction<T, T> implem
                     String key = getRowKey(obj);
                     JSONObject dimJsonObj = RedisUtil.readDimAsync(redisAsyncConn, getTableName(), key);
                     return dimJsonObj;
-                }
-        ).thenApplyAsync(
+                })
+                .thenApplyAsync(
                 dimJsonObj -> {
                     if (dimJsonObj != null) {
                         System.out.println(String.format("~~~从Redis中，找到了表[%s]的RowKey[%s]数据~~~", getTableName(), getRowKey(obj)));
@@ -51,8 +53,8 @@ public abstract class DimAsyncFunction<T> extends RichAsyncFunction<T, T> implem
                         }
                     }
                     return dimJsonObj;
-                }
-        ).thenAcceptAsync(
+                })
+                .thenAcceptAsync(
                 dimJsonObj -> {
                     if (dimJsonObj != null) {
                         addDims(obj, dimJsonObj);

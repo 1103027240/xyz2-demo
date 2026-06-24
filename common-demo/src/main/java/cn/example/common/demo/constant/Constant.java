@@ -96,7 +96,7 @@ public class Constant {
     public static long WATERMARK_DELAY = 3;
     public static long WATERMARK_IDLE_TIMEOUT = 10;
     public static long WINDOW_SIZE = 10;
-    public static long WINDOW_EXPIRE_TIMEOUT = 10;
+    public static long WINDOW_EXPIRE_TIMEOUT = 30;
 
 
     // ==================== StarRocks ====================

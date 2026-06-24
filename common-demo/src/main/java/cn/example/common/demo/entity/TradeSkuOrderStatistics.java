@@ -49,7 +49,7 @@ public class TradeSkuOrderStatistics implements Serializable {
 
     // 二级品类名称
     @JSONField(name = "category2_name")
-    String category2Name;
+    private String category2Name;
 
     // 三级品类 ID
     @JSONField(name = "category3_id")

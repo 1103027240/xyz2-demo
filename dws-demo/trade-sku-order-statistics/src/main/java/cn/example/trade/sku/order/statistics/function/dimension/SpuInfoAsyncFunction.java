@@ -6,8 +6,8 @@ import com.alibaba.fastjson2.JSONObject;
 public class SpuInfoAsyncFunction extends DimAsyncFunction<TradeSkuOrderStatistics> {
 
     @Override
-    public void addDims(TradeSkuOrderStatistics orderBean, JSONObject dimJsonObj) {
-        orderBean.setSpuName(dimJsonObj.getString("spu_name"));
+    public void addDims(TradeSkuOrderStatistics skuOrderStatistics, JSONObject dimJsonObj) {
+        skuOrderStatistics.setSpuName(dimJsonObj.getString("spu_name"));
     }
 
     @Override
@@ -16,8 +16,8 @@ public class SpuInfoAsyncFunction extends DimAsyncFunction<TradeSkuOrderStatisti
     }
 
     @Override
-    public String getRowKey(TradeSkuOrderStatistics orderBean) {
-        return orderBean.getSpuId();
+    public String getRowKey(TradeSkuOrderStatistics skuOrderStatistics) {
+        return skuOrderStatistics.getSpuId();
     }
 
 }

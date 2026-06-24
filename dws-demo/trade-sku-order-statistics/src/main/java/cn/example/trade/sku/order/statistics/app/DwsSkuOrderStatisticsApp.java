@@ -15,7 +15,6 @@ import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.windowing.assigners.TumblingProcessingTimeWindows;
 import org.apache.flink.streaming.api.windowing.time.Time;
-
 import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
@@ -46,7 +45,7 @@ public class DwsSkuOrderStatisticsApp extends BaseApp {
         SingleOutputStreamOperator<TradeSkuOrderStatistics> reduceDS = watermarkDS
                 .map(new SkuOrderStatisticsMapFunction())
                 .keyBy(TradeSkuOrderStatistics::getSkuId)
-                .window(TumblingProcessingTimeWindows.of(Time.seconds(10)))
+                .window(TumblingProcessingTimeWindows.of(Time.seconds(Constant.WINDOW_SIZE)))
                 .reduce(new SkuOrderStatisticsReduceFunction(), new SkuOrderStatisticsWindowFunction());
 
         // 4、关联SKU维度
