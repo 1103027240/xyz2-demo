@@ -51,6 +51,7 @@ public class DwsProvinceOrderStatisticsApp extends BaseApp {
                 .map(new ProvinceOrderStatisticsMapFunction())
                 .keyBy(TradeProvinceOrderStatistics::getProvinceId)
                 .window(TumblingProcessingTimeWindows.of(Time.seconds(Constant.WINDOW_SIZE)))
+                .allowedLateness(Time.seconds(Constant.WATERMARK_OUT_OF_ORDER))
                 .reduce(new ProvinceOrderStatisticsReduceFunction(), new ProvinceOrderStatisticsWindowFunction());
 
         // 4、关联省份维度

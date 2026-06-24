@@ -53,6 +53,7 @@ public class DwsSkuOrderStatisticsApp extends BaseApp {
                 .map(new SkuOrderStatisticsMapFunction())
                 .keyBy(TradeSkuOrderStatistics::getSkuId)
                 .window(TumblingProcessingTimeWindows.of(Time.seconds(Constant.WINDOW_SIZE)))
+                .allowedLateness(Time.seconds(Constant.WATERMARK_OUT_OF_ORDER))
                 .reduce(new SkuOrderStatisticsReduceFunction(), new SkuOrderStatisticsWindowFunction());
 
         // 4、关联SKU维度
@@ -96,6 +97,7 @@ public class DwsSkuOrderStatisticsApp extends BaseApp {
                 new Category1AsyncFunction(),
                 120,
                 TimeUnit.SECONDS);
+        category1DS.print("category1DS");
 
         // 10、存储到StarRocks
         category1DS

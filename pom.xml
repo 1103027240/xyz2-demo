@@ -127,7 +127,6 @@
                 <artifactId>guava</artifactId>
                 <version>${guava.version}</version>
             </dependency>
-
             <!-- ==================== Flink 核心 ==================== -->
             <dependency>
                 <groupId>org.apache.flink</groupId>
@@ -649,11 +648,11 @@
             <version>5.2.0</version>
         </dependency>
 
-        <!-- Lettuce：异步/响应式客户端（推荐） -->
+        <!-- Lettuce：异步/响应式客户端（6.x兼容旧版Netty，避免MultiThreadIoEventLoopGroup冲突） -->
         <dependency>
             <groupId>io.lettuce</groupId>
             <artifactId>lettuce-core</artifactId>
-            <version>7.6.0.RELEASE</version>
+            <version>6.3.2.RELEASE</version>
         </dependency>
 
         <!-- Lombok -->

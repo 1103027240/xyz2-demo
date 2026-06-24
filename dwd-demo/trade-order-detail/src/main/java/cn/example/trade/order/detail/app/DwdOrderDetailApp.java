@@ -62,8 +62,9 @@ public class DwdOrderDetailApp extends BaseSQLApp {
                 "  UNIX_TIMESTAMP(CAST(od.op_ts AS STRING)) as ts\n" +
                 "from dwd_order_detail_source od\n" +
                 "inner join dwd_order_info_source oi on od.order_id = oi.id\n" +
-                "left join dwd_order_detail_activity_source act on od.id = act.order_detail_id\n" +
-                "left join dwd_order_detail_coupon_source cou on od.id = cou.order_detail_id\n"
+                "left join dwd_order_detail_activity_source act on od.id = act.order_detail_id and act.op_type = '+I'\n" +
+                "left join dwd_order_detail_coupon_source cou on od.id = cou.order_detail_id and cou.op_type = '+I'\n" +
+                "where od.op_type = '+I' and oi.op_type = '+I'\n"
         );
 
         // 6、创建upsert-kafka动态表
