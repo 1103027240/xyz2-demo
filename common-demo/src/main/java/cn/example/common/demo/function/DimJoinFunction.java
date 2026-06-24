@@ -1,4 +1,4 @@
-package cn.example.trade.sku.order.statistics.function.dimension;
+package cn.example.common.demo.function;
 
 import com.alibaba.fastjson2.JSONObject;
 

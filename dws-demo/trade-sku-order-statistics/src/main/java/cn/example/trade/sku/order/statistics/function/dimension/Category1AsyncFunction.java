@@ -1,6 +1,7 @@
 package cn.example.trade.sku.order.statistics.function.dimension;
 
 import cn.example.common.demo.entity.TradeSkuOrderStatistics;
+import cn.example.common.demo.function.DimAsyncFunction;
 import com.alibaba.fastjson2.JSONObject;
 
 public class Category1AsyncFunction extends DimAsyncFunction<TradeSkuOrderStatistics> {

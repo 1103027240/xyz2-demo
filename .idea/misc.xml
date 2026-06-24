@@ -9,6 +9,7 @@
         <option value="$PROJECT_DIR$/dwd-demo/trade-order-detail/pom.xml" />
         <option value="$PROJECT_DIR$/dws-demo/trade-cart-statistics/pom.xml" />
         <option value="$PROJECT_DIR$/dws-demo/trade-order-detail-statistics/pom.xml" />
+        <option value="$PROJECT_DIR$/dws-demo/trade-province-order-statistics/pom.xml" />
       </list>
     </option>
   </component>

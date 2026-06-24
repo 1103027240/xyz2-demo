@@ -1,4 +1,4 @@
-package cn.example.trade.sku.order.statistics.function.dimension;
+package cn.example.common.demo.function;
 
 import cn.example.common.demo.constant.Constant;
 import cn.example.common.demo.utils.HBaseUtil;

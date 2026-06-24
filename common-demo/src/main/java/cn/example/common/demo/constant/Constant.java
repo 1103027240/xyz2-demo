@@ -16,7 +16,8 @@ public class Constant {
     public static int DWD_CART_ADD_SERVER_PORT = 8071;
     public static int DWD_ORDER_DETAIL_SERVER_PORT = 8072;
     public static int DWS_CART_STATISTICS_SERVER_PORT = 8073;
-    public static int DWS_ORDER_DETAIL_STATISTICS_SERVER_PORT = 8074;
+    public static int DWS_SKU_ORDER_STATISTICS_SERVER_PORT = 8074;
+    public static int DWS_PROVINCE_ORDER_STATISTICS_SERVER_PORT = 8075;
 
 
     // ==================== Redis ====================
@@ -123,6 +124,7 @@ public class Constant {
     public static final String DATABASE_DWS = "dws";
     public static final String DWS_CART_STATISTICS = "cart_statistics";
     public static final String DWS_TRADE_SKU_ORDER_STATISTICS = "trade_sku_order_statistics";
+    public static final String DWS_TRADE_PROVINCE_ORDER_STATISTICS = "trade_province_order_statistics";
 
 
     // ==================== HBase ====================

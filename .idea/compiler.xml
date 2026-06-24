@@ -12,6 +12,7 @@
         <module name="trade-cart-statistics" />
         <module name="trade-cart" />
         <module name="common-demo" />
+        <module name="trade-province-order-statistics" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -27,6 +28,7 @@
       <module name="trade-cart" options="-parameters" />
       <module name="trade-cart-statistics" options="-parameters" />
       <module name="trade-order-detail" options="-parameters" />
+      <module name="trade-province-order-statistics" options="-parameters" />
       <module name="trade-sku-order-statistics" options="-parameters" />
     </option>
   </component>

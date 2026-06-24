@@ -15,6 +15,7 @@
     <modules>
         <module>trade-cart-statistics</module>
         <module>trade-sku-order-statistics</module>
+        <module>trade-province-order-statistics</module>
     </modules>
 
     <dependencies>

@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit;
 public class DwsSkuOrderStatisticsApp extends BaseApp {
 
     public DwsSkuOrderStatisticsApp() {
-        super(Constant.DWS_ORDER_DETAIL_STATISTICS_SERVER_PORT, Constant.PARALLELISM, Constant.DWD_ORDER_DETAIL, Constant.DWS_TRADE_SKU_ORDER_STATISTICS);
+        super(Constant.DWS_SKU_ORDER_STATISTICS_SERVER_PORT, Constant.PARALLELISM, Constant.DWD_ORDER_DETAIL, Constant.DWS_TRADE_SKU_ORDER_STATISTICS);
     }
 
     public static void main(String[] args) throws Exception {
