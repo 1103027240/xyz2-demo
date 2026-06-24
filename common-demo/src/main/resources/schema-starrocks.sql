@@ -25,6 +25,7 @@ CREATE TABLE IF NOT EXISTS dws.trade_sku_order_statistics (
     dt DATE,
     window_start DATETIME,
     window_end DATETIME,
+    sku_id VARCHAR,
     trade_mark_id VARCHAR,
     trade_mark_name VARCHAR,
     category1_id VARCHAR,
@@ -33,7 +34,6 @@ CREATE TABLE IF NOT EXISTS dws.trade_sku_order_statistics (
     category2_name VARCHAR,
     category3_id VARCHAR,
     category3_name VARCHAR,
-    sku_id VARCHAR,
     sku_name VARCHAR,
     spu_id VARCHAR,
     spu_name VARCHAR,
@@ -75,7 +75,7 @@ PROPERTIES (
     "dynamic_partition.enable" = "true",
     "dynamic_partition.time_unit" = "DAY",
     "dynamic_partition.start" = "-7",
-    "dynamic_partition.end" = "",
+    "dynamic_partition.end" = "3",
     "dynamic_partition.prefix" = "p",
     "dynamic_partition.buckets" = "8"
 );

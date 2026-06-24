@@ -10,6 +10,7 @@ import org.apache.flink.configuration.Configuration;
 import org.apache.flink.streaming.api.functions.sink.RichSinkFunction;
 import org.apache.hadoop.hbase.client.Connection;
 import redis.clients.jedis.Jedis;
+import java.util.Arrays;
 
 public class HBaseSinkFunction extends RichSinkFunction<Tuple2<JSONObject, TableProcessDim>> {
 
@@ -47,10 +48,8 @@ public class HBaseSinkFunction extends RichSinkFunction<Tuple2<JSONObject, Table
         }
 
         //如果业务表数据（如维度表）发生了变化（修改或删除），将Redis缓存数据删除
-        String key = RedisUtil.getKey(sinkTable, rowKey);
-        if (Constant.KAFKA_CDC_INSERT.equals(type.toUpperCase())) {
-            RedisUtil.writeDim(jedis, sinkTable, rowKey, jsonObj);
-        } else {
+        if (Arrays.asList(Constant.KAFKA_CDC_UPDATE, Constant.KAFKA_CDC_DELETE).contains(type.toUpperCase())) {
+            String key = RedisUtil.getKey(sinkTable, rowKey);
             jedis.del(key);
         }
     }
