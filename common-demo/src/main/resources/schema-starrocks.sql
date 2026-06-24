@@ -4,20 +4,19 @@ CREATE TABLE IF NOT EXISTS dws.cart_statistics (
     dt DATE,
     window_start DATETIME,
     window_end DATETIME,
-    cart_add_cnt BIGINT
+    cart_add_cnt BIGINT REPLACE
 )
 ENGINE = OLAP
-PRIMARY KEY(dt, window_start, window_end)
+AGGREGATE KEY(dt, window_start, window_end)
 PARTITION BY RANGE(dt) ()
-DISTRIBUTED BY HASH(window_start) BUCKETS 8
+DISTRIBUTED BY HASH(window_start) BUCKETS 10
 PROPERTIES (
     "replication_num" = "3",
     "dynamic_partition.enable" = "true",
     "dynamic_partition.time_unit" = "DAY",
-    "dynamic_partition.start" = "-7",
-    "dynamic_partition.end" = "360",
+    "dynamic_partition.end" = "3",
     "dynamic_partition.prefix" = "p",
-    "dynamic_partition.buckets" = "8"
+    "dynamic_partition.buckets" = "10"
 );
 
 -- 交易域SKU-订单统计表
@@ -25,35 +24,35 @@ CREATE TABLE IF NOT EXISTS dws.trade_sku_order_statistics (
     dt DATE,
     window_start DATETIME,
     window_end DATETIME,
-    sku_id VARCHAR,
-    trade_mark_id VARCHAR,
-    trade_mark_name VARCHAR,
-    category1_id VARCHAR,
-    category1_name VARCHAR,
-    category2_id VARCHAR,
-    category2_name VARCHAR,
-    category3_id VARCHAR,
-    category3_name VARCHAR,
-    sku_name VARCHAR,
-    spu_id VARCHAR,
-    spu_name VARCHAR,
-    original_amount DECIMAL(16, 2),
-    activity_reduce_amount DECIMAL(16, 2),
-    coupon_reduce_amount DECIMAL(16, 2),
-    order_amount DECIMAL(16, 2)
+    trade_mark_id VARCHAR(32),
+    trade_mark_name VARCHAR(100),
+    category1_id VARCHAR(32),
+    category1_name VARCHAR(200),
+    category2_id VARCHAR(32),
+    category2_name VARCHAR(200),
+    category3_id VARCHAR(32),
+    category3_name VARCHAR(200),
+    sku_id VARCHAR(32),
+    sku_name VARCHAR(200),
+    spu_id VARCHAR(32),
+    spu_name VARCHAR(200),
+    original_amount DECIMAL(16, 2) REPLACE,
+    activity_reduce_amount DECIMAL(16, 2) REPLACE,
+    coupon_reduce_amount DECIMAL(16, 2) REPLACE,
+    order_amount DECIMAL(16, 2) REPLACE
 )
 ENGINE = OLAP
-PRIMARY KEY(dt, window_start, window_end, sku_id)
+AGGREGATE KEY(dt, window_start, window_end, trade_mark_id, trade_mark_name, category1_id, category1_name, category2_id, category2_name,
+category3_id, category3_name, sku_id, sku_name, spu_id, spu_name)
 PARTITION BY RANGE(dt) ()
-DISTRIBUTED BY HASH(sku_id) BUCKETS 8
+DISTRIBUTED BY HASH(window_start) BUCKETS 10
 PROPERTIES (
     "replication_num" = "3",
     "dynamic_partition.enable" = "true",
     "dynamic_partition.time_unit" = "DAY",
-    "dynamic_partition.start" = "-7",
     "dynamic_partition.end" = "3",
     "dynamic_partition.prefix" = "p",
-    "dynamic_partition.buckets" = "8"
+    "dynamic_partition.buckets" = "10"
 );
 
 -- 交易域省份-订单统计表
@@ -61,21 +60,20 @@ CREATE TABLE IF NOT EXISTS dws.trade_province_order_statistics (
     dt DATE,
     window_start DATETIME,
     window_end DATETIME,
-    province_id VARCHAR,
-    province_name VARCHAR,
-    order_count BIGINT,
-    order_amount DECIMAL(16, 2)
+    province_id VARCHAR(32),
+    province_name VARCHAR(64),
+    order_count BIGINT REPLACE,
+    order_amount DECIMAL(16, 2) REPLACE
 )
 ENGINE = OLAP
-PRIMARY KEY(dt, window_start, window_end, province_id)
+    AGGREGATE KEY(dt, window_start, window_end, province_id, province_name)
 PARTITION BY RANGE(dt) ()
-DISTRIBUTED BY HASH(province_id) BUCKETS 8
+DISTRIBUTED BY HASH(window_start) BUCKETS 10
 PROPERTIES (
     "replication_num" = "3",
     "dynamic_partition.enable" = "true",
     "dynamic_partition.time_unit" = "DAY",
-    "dynamic_partition.start" = "-7",
     "dynamic_partition.end" = "3",
     "dynamic_partition.prefix" = "p",
-    "dynamic_partition.buckets" = "8"
+    "dynamic_partition.buckets" = "10"
 );
