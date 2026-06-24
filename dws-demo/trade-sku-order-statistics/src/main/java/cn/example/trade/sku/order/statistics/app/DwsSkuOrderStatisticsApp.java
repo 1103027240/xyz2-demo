@@ -24,6 +24,13 @@ public class DwsSkuOrderStatisticsApp extends BaseApp {
         super(Constant.DWS_SKU_ORDER_STATISTICS_SERVER_PORT, Constant.PARALLELISM, Constant.DWD_ORDER_DETAIL, Constant.DWS_TRADE_SKU_ORDER_STATISTICS);
     }
 
+    /**
+     * 启动参数
+     * --add-opens java.base/java.nio=ALL-UNNAMED
+     * --add-opens java.base/sun.nio.ch=ALL-UNNAMED
+     * --add-opens java.base/java.lang=ALL-UNNAMED
+     * --add-opens java.base/java.util=ALL-UNNAMED
+     */
     public static void main(String[] args) throws Exception {
         new DwsSkuOrderStatisticsApp().run();
     }

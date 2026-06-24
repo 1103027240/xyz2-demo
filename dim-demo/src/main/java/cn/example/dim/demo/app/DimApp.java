@@ -24,6 +24,13 @@ public class DimApp extends BaseApp {
         super(Constant.DIM_TABLE_SERVER_PORT, Constant.PARALLELISM, Constant.KAFKA_TOPIC_DB, Constant.DIM_APP);
     }
 
+    /**
+     * 启动参数
+     * --add-opens java.base/java.nio=ALL-UNNAMED
+     * --add-opens java.base/sun.nio.ch=ALL-UNNAMED
+     * --add-opens java.base/java.lang=ALL-UNNAMED
+     * --add-opens java.base/java.util=ALL-UNNAMED
+     */
     public static void main(String[] args) throws Exception {
         new DimApp().run();
     }
