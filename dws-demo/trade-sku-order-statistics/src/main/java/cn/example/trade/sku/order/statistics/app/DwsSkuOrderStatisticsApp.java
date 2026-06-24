@@ -30,6 +30,7 @@ public class DwsSkuOrderStatisticsApp extends BaseApp {
      * --add-opens java.base/sun.nio.ch=ALL-UNNAMED
      * --add-opens java.base/java.lang=ALL-UNNAMED
      * --add-opens java.base/java.util=ALL-UNNAMED
+     * 建表语句字符串用VARCHAR，指定字符串大小
      */
     public static void main(String[] args) throws Exception {
         new DwsSkuOrderStatisticsApp().run();
@@ -99,10 +100,8 @@ public class DwsSkuOrderStatisticsApp extends BaseApp {
                 TimeUnit.SECONDS);
 
         // 10、存储到StarRocks
-        SingleOutputStreamOperator<String> jsonDS = category1DS.map(new BeanToJsonFunction<>());
-        jsonDS.print("jsonDS");
-
-        jsonDS.addSink(FlinkSinkUtil.createStarRocksSink(Constant.DATABASE_DWS, Constant.DWS_TRADE_SKU_ORDER_STATISTICS));
+        category1DS.map(new BeanToJsonFunction<>())
+                .addSink(FlinkSinkUtil.createStarRocksSink(Constant.DATABASE_DWS, Constant.DWS_TRADE_SKU_ORDER_STATISTICS));
 
     }
 

@@ -28,6 +28,7 @@ public class DwsProvinceOrderStatisticsApp extends BaseApp {
      * --add-opens java.base/sun.nio.ch=ALL-UNNAMED
      * --add-opens java.base/java.lang=ALL-UNNAMED
      * --add-opens java.base/java.util=ALL-UNNAMED
+     * 建表语句字符串用VARCHAR，指定字符串大小
      */
     public static void main(String[] args) throws Exception {
         new DwsProvinceOrderStatisticsApp().run();
