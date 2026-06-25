@@ -15,7 +15,7 @@ public abstract class BaseSQLApp {
         this(port, parallelism, groupId, false);
     }
 
-    /** 通用构造器（isClusterMode=true 时使用集群模式） */
+    /** 通用构造器（isClusterMode=true时，使用集群模式） */
     protected BaseSQLApp(int port, int parallelism, String groupId, boolean isClusterMode) {
         this.port = port;
         this.parallelism = parallelism;

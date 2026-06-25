@@ -2,13 +2,14 @@ package cn.example.common.demo.constant;
 
 /**
  * 全局配置常量
- * @Test — 当前值,本地
+ * @Test — 当前值
  * @Prod — 生产推荐值
  */
 public class Constant {
 
     // ==================== 作业端口 ====================
     /**
+     * http://localhost:8070
      * http://localhost:8070/jobs
      * http://localhost:8070/jobs/{id}：id取上面查询结果id
      */

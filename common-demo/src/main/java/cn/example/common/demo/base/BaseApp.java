@@ -20,7 +20,7 @@ public abstract class BaseApp {
         this(port, parallelism, topic, groupId, false);
     }
 
-    /** 通用构造器（isClusterMode=true 时使用集群模式） */
+    /** 通用构造器（isClusterMode=true时，使用集群模式） */
     protected BaseApp(int port, int parallelism, String topic, String groupId, boolean isClusterMode) {
         this.port = port;
         this.parallelism = parallelism;
