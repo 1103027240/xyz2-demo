@@ -12,4 +12,20 @@
     <artifactId>trade-order-detail</artifactId>
     <name>trade-order-detail</name>
 
+    <dependencies>
+        <dependency>
+            <groupId>cn.example</groupId>
+            <artifactId>common-demo</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
 </project>
