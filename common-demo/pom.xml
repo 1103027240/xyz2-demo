@@ -2,6 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>cn.example</groupId>
         <artifactId>xyz2-demo</artifactId>
@@ -16,7 +17,6 @@
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-connector-base</artifactId>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.flink</groupId>
@@ -26,35 +26,12 @@
             <groupId>com.starrocks</groupId>
             <artifactId>flink-connector-starrocks</artifactId>
         </dependency>
-        <!-- 
-         注意：flink-connector-redis 已移除，因为它的旧版（1.1.0，基于 Flink 1.14.5）
-         与 Flink 1.20 的 CatalogStore SPI 冲突，会导致：
-         NullPointerException: CatalogStoreHolder cannot be null
-         Redis 操作直接使用 Jedis + Lettuce，不需要 Flink Redis connector
-        -->
-        <dependency>
-            <groupId>org.apache.flink</groupId>
-            <artifactId>flink-connector-jdbc</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.flink</groupId>
-            <artifactId>flink-connector-jdbc-core</artifactId>
-        </dependency>
-        <!-- MySQL CDC 连接器 -->
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-connector-mysql-cdc</artifactId>
         </dependency>
 
-        <!-- Flink Formats & Filesystem -->
-        <dependency>
-            <groupId>org.apache.flink</groupId>
-            <artifactId>flink-connector-files</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.flink</groupId>
-            <artifactId>flink-csv</artifactId>
-        </dependency>
+        <!-- Flink Formats -->
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-json</artifactId>
@@ -66,36 +43,7 @@
             <artifactId>mysql-connector-j</artifactId>
         </dependency>
 
-        <!-- Spring Boot -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-configuration-processor</artifactId>
-            <optional>true</optional>
-        </dependency>
-
-        <!-- Jackson -->
-        <dependency>
-            <groupId>com.fasterxml.jackson.dataformat</groupId>
-            <artifactId>jackson-dataformat-yaml</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.dataformat</groupId>
-            <artifactId>jackson-dataformat-csv</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-        </dependency>
-
         <!-- Utils -->
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-compress</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-        </dependency>
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
@@ -104,10 +52,8 @@
             <groupId>com.alibaba.fastjson2</groupId>
             <artifactId>fastjson2</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-        </dependency>
+
+        <!-- Lombok -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>

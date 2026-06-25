@@ -2,6 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -28,44 +29,26 @@
         <!-- Flink Connectors -->
         <flink-kafka.version>3.4.0-1.20</flink-kafka.version>
         <flink-starrocks.version>1.2.14_flink-1.20</flink-starrocks.version>
-        <flink-redis.version>1.1.0</flink-redis.version>
-        <flink-jdbc.version>3.3.0-1.20</flink-jdbc.version>
         <flink-mysql-cdc.version>3.6.0-1.20</flink-mysql-cdc.version>
 
         <!-- Big Data -->
         <bigdata.hadoop.version>3.4.0</bigdata.hadoop.version>
         <bigdata.hbase.version>2.6.1</bigdata.hbase.version>
-        <bigdata.phoenix.version>5.3.1</bigdata.phoenix.version>
 
         <!-- 强制统一的关键传递依赖版本 -->
         <protobuf.version>3.25.1</protobuf.version>
         <guava.version>32.1.2-jre</guava.version>
 
-        <!-- Canal -->
-        <canal.version>1.1.8</canal.version>
-
-        <!-- Spring Cloud -->
-        <spring-cloud-alibaba.version>2025.0.0.0</spring-cloud-alibaba.version>
-        <spring-cloud-bootstrap.version>4.1.2</spring-cloud-bootstrap.version>
-
         <!-- Database -->
-        <druid.version>1.2.27</druid.version>
         <mysql.version>8.3.0</mysql.version>
-        <mybatis.version>3.5.15</mybatis.version>
 
         <!-- Utils -->
-        <jackson.version>2.18.2</jackson.version>
-        <gson.version>2.10.1</gson.version>
         <fastjson.version>2.0.51</fastjson.version>
         <hutool.version>5.8.40</hutool.version>
-        <knife4j.version>4.5.0</knife4j.version>
         <lombok.version>1.18.30</lombok.version>
-        <commons-compress.version>1.26.2</commons-compress.version>
-        <commons-io.version>2.15.1</commons-io.version>
     </properties>
 
     <repositories>
-        <!-- Maven Central -->
         <repository>
             <id>maven-central</id>
             <name>Maven Central</name>
@@ -73,26 +56,6 @@
             <releases><enabled>true</enabled></releases>
             <snapshots><enabled>false</enabled></snapshots>
         </repository>
-
-        <!-- Apache Releases（Phoenix 等组件的发布仓库） -->
-        <repository>
-            <id>apache-releases</id>
-            <name>Apache Releases</name>
-            <url>https://repository.apache.org/content/repositories/releases/</url>
-            <releases><enabled>true</enabled></releases>
-            <snapshots><enabled>false</enabled></snapshots>
-        </repository>
-
-        <!-- Spring Milestone -->
-        <repository>
-            <id>spring-milestone</id>
-            <name>Spring Milestone</name>
-            <url>https://repo.spring.io/milestone</url>
-            <releases><enabled>true</enabled></releases>
-            <snapshots><enabled>false</enabled></snapshots>
-        </repository>
-
-        <!-- 阿里云 Maven 仓库 -->
         <repository>
             <id>aliyunmaven</id>
             <name>阿里云公共仓库</name>
@@ -114,19 +77,17 @@
 
     <dependencyManagement>
         <dependencies>
-            <!-- ==================== 强制统一的关键传递依赖 ==================== -->
-            <!-- protobuf：HBase/Phoenix 带入 2.5.0，Hadoop 3.x 需要 3.x，强制统一到 3.25.1 -->
             <dependency>
                 <groupId>com.google.protobuf</groupId>
                 <artifactId>protobuf-java</artifactId>
                 <version>${protobuf.version}</version>
             </dependency>
-            <!-- Guava：HBase 带入 27.0-jre，Hadoop 3.4.0 需要 32.x，强制统一 -->
             <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>${guava.version}</version>
             </dependency>
+
             <!-- ==================== Flink 核心 ==================== -->
             <dependency>
                 <groupId>org.apache.flink</groupId>
@@ -170,41 +131,11 @@
             </dependency>
             <dependency>
                 <groupId>org.apache.flink</groupId>
-                <artifactId>flink-cep</artifactId>
-                <version>${flink.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.flink</groupId>
-                <artifactId>flink-statebackend-rocksdb</artifactId>
-                <version>${flink.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.flink</groupId>
-                <artifactId>flink-runtime-web</artifactId>
-                <version>${flink.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.flink</groupId>
                 <artifactId>flink-connector-base</artifactId>
                 <version>${flink.version}</version>
             </dependency>
-            <dependency>
-                <groupId>org.apache.flink</groupId>
-                <artifactId>flink-connector-files</artifactId>
-                <version>${flink.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.flink</groupId>
-                <artifactId>flink-csv</artifactId>
-                <version>${flink.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.flink</groupId>
-                <artifactId>flink-json</artifactId>
-                <version>${flink.version}</version>
-            </dependency>
 
-            <!-- Flink Connectors -->
+            <!-- ==================== Flink Connectors ==================== -->
             <dependency>
                 <groupId>org.apache.flink</groupId>
                 <artifactId>flink-connector-kafka</artifactId>
@@ -216,24 +147,14 @@
                 <version>${flink-starrocks.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.apache.bahir</groupId>
-                <artifactId>flink-connector-redis_${scala.binary.version}</artifactId>
-                <version>${flink-redis.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.flink</groupId>
-                <artifactId>flink-connector-jdbc</artifactId>
-                <version>${flink-jdbc.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.flink</groupId>
-                <artifactId>flink-connector-jdbc-core</artifactId>
-                <version>${flink-jdbc.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>org.apache.flink</groupId>
                 <artifactId>flink-connector-mysql-cdc</artifactId>
                 <version>${flink-mysql-cdc.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.flink</groupId>
+                <artifactId>flink-json</artifactId>
+                <version>${flink.version}</version>
             </dependency>
 
             <!-- ==================== Hadoop ==================== -->
@@ -242,134 +163,12 @@
                 <artifactId>hadoop-client</artifactId>
                 <version>${bigdata.hadoop.version}</version>
             </dependency>
-            <dependency>
-                <groupId>org.apache.hadoop</groupId>
-                <artifactId>hadoop-common</artifactId>
-                <version>${bigdata.hadoop.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.hadoop</groupId>
-                <artifactId>hadoop-auth</artifactId>
-                <version>${bigdata.hadoop.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.hadoop</groupId>
-                <artifactId>hadoop-hdfs</artifactId>
-                <version>${bigdata.hadoop.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.hadoop</groupId>
-                <artifactId>hadoop-hdfs-client</artifactId>
-                <version>${bigdata.hadoop.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.hadoop</groupId>
-                <artifactId>hadoop-mapreduce-client-core</artifactId>
-                <version>${bigdata.hadoop.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.hadoop</groupId>
-                <artifactId>hadoop-yarn-common</artifactId>
-                <version>${bigdata.hadoop.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.hadoop</groupId>
-                <artifactId>hadoop-annotations</artifactId>
-                <version>${bigdata.hadoop.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.hadoop</groupId>
-                <artifactId>hadoop-distcp</artifactId>
-                <version>${bigdata.hadoop.version}</version>
-            </dependency>
 
             <!-- ==================== HBase ==================== -->
             <dependency>
                 <groupId>org.apache.hbase</groupId>
                 <artifactId>hbase-client</artifactId>
                 <version>${bigdata.hbase.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.hbase</groupId>
-                <artifactId>hbase-common</artifactId>
-                <version>${bigdata.hbase.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.hbase</groupId>
-                <artifactId>hbase-protocol</artifactId>
-                <version>${bigdata.hbase.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.hbase</groupId>
-                <artifactId>hbase-protocol-shaded</artifactId>
-                <version>${bigdata.hbase.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.hbase</groupId>
-                <artifactId>hbase-zookeeper</artifactId>
-                <version>${bigdata.hbase.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.hbase</groupId>
-                <artifactId>hbase-http</artifactId>
-                <version>${bigdata.hbase.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.hbase</groupId>
-                <artifactId>hbase-metrics</artifactId>
-                <version>${bigdata.hbase.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.hbase</groupId>
-                <artifactId>hbase-metrics-api</artifactId>
-                <version>${bigdata.hbase.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.hbase</groupId>
-                <artifactId>hbase-hadoop-compat</artifactId>
-                <version>${bigdata.hbase.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.hbase</groupId>
-                <artifactId>hbase-hadoop2-compat</artifactId>
-                <version>${bigdata.hbase.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.hbase</groupId>
-                <artifactId>hbase-server</artifactId>
-                <version>${bigdata.hbase.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.hbase</groupId>
-                <artifactId>hbase-mapreduce</artifactId>
-                <version>${bigdata.hbase.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.hbase</groupId>
-                <artifactId>hbase-asyncfs</artifactId>
-                <version>${bigdata.hbase.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.hbase</groupId>
-                <artifactId>hbase-replication</artifactId>
-                <version>${bigdata.hbase.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.hbase</groupId>
-                <artifactId>hbase-procedure</artifactId>
-                <version>${bigdata.hbase.version}</version>
-            </dependency>
-
-            <!-- ==================== Phoenix ==================== -->
-            <dependency>
-                <groupId>org.apache.phoenix</groupId>
-                <artifactId>phoenix-core</artifactId>
-                <version>${bigdata.phoenix.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.phoenix</groupId>
-                <artifactId>phoenix-hbase-compat-2.6.0</artifactId>
-                <version>${bigdata.phoenix.version}</version>
             </dependency>
 
             <!-- ==================== 内部模块 ==================== -->
@@ -386,43 +185,11 @@
                 <version>${mysql.version}</version>
             </dependency>
 
-            <!-- ==================== Jackson ==================== -->
-            <dependency>
-                <groupId>com.fasterxml.jackson.dataformat</groupId>
-                <artifactId>jackson-dataformat-yaml</artifactId>
-                <version>${jackson.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.fasterxml.jackson.dataformat</groupId>
-                <artifactId>jackson-dataformat-csv</artifactId>
-                <version>${jackson.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.fasterxml.jackson.core</groupId>
-                <artifactId>jackson-databind</artifactId>
-                <version>${jackson.version}</version>
-            </dependency>
-
             <!-- ==================== Utils ==================== -->
             <dependency>
                 <groupId>cn.hutool</groupId>
                 <artifactId>hutool-all</artifactId>
                 <version>${hutool.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.commons</groupId>
-                <artifactId>commons-compress</artifactId>
-                <version>${commons-compress.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>commons-io</groupId>
-                <artifactId>commons-io</artifactId>
-                <version>${commons-io.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.google.code.gson</groupId>
-                <artifactId>gson</artifactId>
-                <version>${gson.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.alibaba.fastjson2</groupId>
@@ -434,8 +201,8 @@
 
     <dependencies>
         <!-- ==================== Flink 核心 ==================== -->
-        <!-- 注意：scope 设为 compile，方便本地 IDE 运行调试。 -->
-        <!-- maven-shade-plugin 中已配置排除 Flink 核心库，打包 fat jar 时不会包含这些 jar。 -->
+        <!-- 注意：scope compile 方便本地 IDE 运行调试。 -->
+        <!-- maven-shade-plugin 已配置排除 Flink 核心库，打包 fat jar 时不会包含这些 jar。 -->
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-java</artifactId>
@@ -456,23 +223,8 @@
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-table-planner_${scala.binary.version}</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.apache.flink</groupId>
-            <artifactId>flink-cep</artifactId>
-        </dependency>
-        <!-- Flink RocksDB 状态后端 -->
-        <dependency>
-            <groupId>org.apache.flink</groupId>
-            <artifactId>flink-statebackend-rocksdb</artifactId>
-        </dependency>
-        <!-- Flink Web UI 前端页面，方便本地调试 -->
-        <dependency>
-            <groupId>org.apache.flink</groupId>
-            <artifactId>flink-runtime-web</artifactId>
-        </dependency>
 
         <!-- ==================== Hadoop ==================== -->
-        <!-- hadoop-client 已包含 hadoop-common/hdfs/auth，无需重复声明 -->
         <dependency>
             <groupId>org.apache.hadoop</groupId>
             <artifactId>hadoop-client</artifactId>
@@ -485,138 +237,6 @@
                 <exclusion>
                     <groupId>ch.qos.reload4j</groupId>
                     <artifactId>reload4j</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
-        <!-- ==================== Phoenix ==================== -->
-        <dependency>
-            <groupId>org.apache.phoenix</groupId>
-            <artifactId>phoenix-core</artifactId>
-            <exclusions>
-                <!-- 排除 Phoenix 带入的低版本 Hadoop/HBase，由 dependencyManagement 统一管理 -->
-                <exclusion>
-                    <groupId>org.apache.hadoop</groupId>
-                    <artifactId>hadoop-common</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.apache.hadoop</groupId>
-                    <artifactId>hadoop-auth</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.apache.hadoop</groupId>
-                    <artifactId>hadoop-hdfs</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.apache.hadoop</groupId>
-                    <artifactId>hadoop-mapreduce-client-core</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.apache.hadoop</groupId>
-                    <artifactId>hadoop-annotations</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.apache.hbase</groupId>
-                    <artifactId>hbase-client</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.apache.hbase</groupId>
-                    <artifactId>hbase-common</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.apache.hbase</groupId>
-                    <artifactId>hbase-protocol</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.apache.hbase</groupId>
-                    <artifactId>hbase-protocol-shaded</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.apache.hbase</groupId>
-                    <artifactId>hbase-server</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.apache.hbase</groupId>
-                    <artifactId>hbase-mapreduce</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.apache.hbase</groupId>
-                    <artifactId>hbase-metrics</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.apache.hbase</groupId>
-                    <artifactId>hbase-metrics-api</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.apache.hbase</groupId>
-                    <artifactId>hbase-hadoop-compat</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.apache.hbase</groupId>
-                    <artifactId>hbase-hadoop2-compat</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.apache.hbase</groupId>
-                    <artifactId>hbase-zookeeper</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.apache.hbase</groupId>
-                    <artifactId>hbase-http</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.apache.hbase</groupId>
-                    <artifactId>hbase-asyncfs</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.apache.hbase</groupId>
-                    <artifactId>hbase-replication</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.apache.hbase</groupId>
-                    <artifactId>hbase-procedure</artifactId>
-                </exclusion>
-                <!-- 排除古老 protobuf 2.5.0，Hadoop 3.x 需要 3.25.1 -->
-                <exclusion>
-                    <groupId>com.google.protobuf</groupId>
-                    <artifactId>protobuf-java</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-reload4j</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>javax.servlet</groupId>
-                    <artifactId>*</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.phoenix</groupId>
-            <artifactId>phoenix-hbase-compat-2.6.0</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.hadoop</groupId>
-                    <artifactId>hadoop-common</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.apache.hbase</groupId>
-                    <artifactId>hbase-client</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.apache.hbase</groupId>
-                    <artifactId>hbase-common</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.apache.hbase</groupId>
-                    <artifactId>hbase-protocol-shaded</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.apache.hbase</groupId>
-                    <artifactId>hbase-server</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.google.protobuf</groupId>
-                    <artifactId>protobuf-java</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -641,18 +261,17 @@
             </exclusions>
         </dependency>
 
-        <!-- Jedis：同步客户端 -->
+        <!-- Redis 客户端 -->
+        <!-- Jedis：同步连接池 -->
         <dependency>
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
             <version>5.2.0</version>
         </dependency>
-
-        <!-- Lettuce：异步/响应式客户端（6.x兼容旧版Netty，避免MultiThreadIoEventLoopGroup冲突） -->
+        <!-- Lettuce：异步非阻塞连接（RedisUtil 的 async 方法使用） -->
         <dependency>
             <groupId>io.lettuce</groupId>
             <artifactId>lettuce-core</artifactId>
-            <version>6.3.2.RELEASE</version>
         </dependency>
 
         <!-- Lombok -->
