@@ -21,22 +21,22 @@ public class Constant {
 
 
     // ==================== Redis ====================
-    /** @Local：127.0.0.1（默认） | @StreamPark：redis-8.2.4 **/
+    /** @Local：127.0.0.1 | @StreamPark：redis-8.2.4 **/
     public static final String REDIS_HOST = System.getProperty("redis.host", "127.0.0.1");
     public static final int REDIS_PORT = 6379;
     public static final long DIM_REDIS_EXPIRE = 24 * 60 * 60;
 
 
     // ==================== MySQL ====================
-    /** @Local：127.0.0.1（默认） | @StreamPark：mysql8.4.7 **/
+    /** @Local：127.0.0.1 | @StreamPark：mysql8.4.7 **/
     public static final String MYSQL_HOST = System.getProperty("mysql.host", "127.0.0.1");
-    /** @Local：3316（默认） | @StreamPark：3306 **/
+    /** @Local：3316 | @StreamPark：3306 **/
     public static final int MYSQL_PORT = Integer.parseInt(System.getProperty("mysql.port", "3316"));
     /** 由 MYSQL_HOST + MYSQL_PORT 拼接，无需单独配置 **/
     public static final String MYSQL_URL = "jdbc:mysql://" + MYSQL_HOST + ":" + MYSQL_PORT + "/sync_test?useUnicode=true&characterEncoding=utf-8&nullCatalogMeansCurrent=true&useSSL=false&serverTimezone=Asia/Shanghai";
-    /** @Local：root（默认） | @StreamPark：root **/
+    /** @Local：root | @StreamPark：root **/
     public static final String MYSQL_USERNAME = System.getProperty("mysql.username", "root");
-    /** @Local：root（默认） | @StreamPark：root **/
+    /** @Local：root | @StreamPark：root **/
     public static final String MYSQL_PASSWORD = System.getProperty("mysql.password", "root");
     public static final String MYSQL_DATABASE = "sync_test";
     public static final String TABLE_PROCESS_DIM = "table_process_dim";
@@ -75,8 +75,8 @@ public class Constant {
 
 
     // ==================== Kafka ====================
-    /** @Local：127.0.0.1:9092（默认） | @StreamPark：kafka-1:9092,kafka-2:9092,kafka-3:9092 **/
-    public static final String KAFKA_BROKERS = System.getProperty("kafka.brokers", "127.0.0.1:9092");
+    /** @Local：kafka-1:9092,kafka-2:9092,kafka-3:9092 | @StreamPark：kafka-1:9092,kafka-2:9092,kafka-3:9092 **/
+    public static final String KAFKA_BROKERS = System.getProperty("kafka.brokers", "kafka-1:9092,kafka-2:9092,kafka-3:9092");
     public static final String KAFKA_TOPIC_DB = "canal-topic";
 
 
@@ -111,8 +111,8 @@ public class Constant {
     // ==================== StarRocks ====================
     /** @Local：jdbc:mysql://127.0.0.1:9030,127.0.0.1:9031,127.0.0.1:9032/（默认） | @StreamPark：jdbc:mysql://starrocks-fe-0:9030,starrocks-fe-1:9030,starrocks-fe-2:9030/ **/
     public static final String STARROCKS_JDBC_URL = System.getProperty("starrocks.jdbc.url", "jdbc:mysql://127.0.0.1:9030,127.0.0.1:9031,127.0.0.1:9032/");
-    /** @Local：127.0.0.1:8030,127.0.0.1:8031,127.0.0.1:8032（默认） | @StreamPark：starrocks-fe-0:8030,starrocks-fe-1:8030,starrocks-fe-2:8030 **/
-    public static final String STARROCKS_LOAD_URL = System.getProperty("starrocks.load.url", "127.0.0.1:8030,127.0.0.1:8031,127.0.0.1:8032");
+    /** @Local：127.0.0.1:8032 | @StreamPark：starrocks-fe-0:8030,starrocks-fe-1:8030,starrocks-fe-2:8030 **/
+    public static final String STARROCKS_LOAD_URL = System.getProperty("starrocks.load.url", "127.0.0.1:8032");
     public static final String STARROCKS_USERNAME = "root";
     public static final String STARROCKS_PASSWORD = "root";
 
@@ -136,8 +136,8 @@ public class Constant {
 
 
     // ==================== HBase ====================
-    /** @Local：127.0.0.1:2181（默认） | @StreamPark：zookeeper1,zookeeper2,zookeeper3:2181 **/
-    public static final String HBASE_ZOOKEEPER_QUORUM = System.getProperty("hbase.zookeeper.quorum", "127.0.0.1:2181");
+    /** @Local：zookeeper1,zookeeper2,zookeeper3:2181 | @StreamPark：zookeeper1,zookeeper2,zookeeper3:2181 **/
+    public static final String HBASE_ZOOKEEPER_QUORUM = System.getProperty("hbase.zookeeper.quorum", "zookeeper1,zookeeper2,zookeeper3:2181");
     public static final String HBASE_NAMESPACE = "XYZ2_DEMO";
 
 
