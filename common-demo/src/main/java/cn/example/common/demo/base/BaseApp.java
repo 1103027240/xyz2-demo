@@ -13,17 +13,30 @@ public abstract class BaseApp {
     protected final int parallelism;
     protected final String topic;
     protected final String groupId;
+    protected final boolean isClusterMode;
 
+    /** 本地模式构造器 */
     protected BaseApp(int port, int parallelism, String topic, String groupId) {
+        this(port, parallelism, topic, groupId, false);
+    }
+
+    /** 通用构造器（isClusterMode=true 时使用集群模式） */
+    protected BaseApp(int port, int parallelism, String topic, String groupId, boolean isClusterMode) {
         this.port = port;
         this.parallelism = parallelism;
         this.topic = topic;
         this.groupId = groupId;
+        this.isClusterMode = isClusterMode;
     }
 
     public void run() throws Exception {
         // 1、创建执行环境
-        StreamExecutionEnvironment env = FlinkBuilder.createStreamExecutionEnvironment(port, parallelism, groupId);
+        StreamExecutionEnvironment env;
+        if (isClusterMode) {
+            env = FlinkBuilder.createStreamExecutionEnvironmentForCluster(parallelism, groupId);
+        } else {
+            env = FlinkBuilder.createStreamExecutionEnvironment(port, parallelism, groupId);
+        }
 
         // 2、从Kafka读取业务数据
         KafkaSource<String> kafkaSource = FlinkSourceUtil.getKafkaSource(topic, groupId);
@@ -38,5 +51,17 @@ public abstract class BaseApp {
     }
 
     public abstract void handle(StreamExecutionEnvironment env, DataStreamSource<String> kafkaDS);
+
+    /** 检查启动参数是否包含 --cluster 标志 */
+    protected static boolean hasClusterFlag(String[] args) {
+        if (args != null) {
+            for (String arg : args) {
+                if ("--cluster".equals(arg)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
 }

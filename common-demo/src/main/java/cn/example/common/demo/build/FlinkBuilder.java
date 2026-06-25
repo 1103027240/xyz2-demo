@@ -13,34 +13,20 @@ import org.apache.flink.table.api.EnvironmentSettings;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 
 public class FlinkBuilder {
+
+    // ==================== 本地模式（IDEA开发调试） ====================
+
     public static StreamExecutionEnvironment createStreamExecutionEnvironment(int port, int parallelism, String groupId) {
-        // 1、执行环境
         StreamExecutionEnvironment env = createBasicStreamExecutionEnvironment(port, parallelism);
-
-        // 2、检查点相关设置
         configCheckpoint(env, groupId);
-
         return env;
     }
 
     public static StreamTableEnvironment createStreamTableEnvironment(int port, int parallelism, String groupId) {
-        // 1、执行环境
         StreamExecutionEnvironment env = createBasicStreamExecutionEnvironment(port, parallelism);
-
-        // 2、表执行环境（Flink1.20需显式使用EnvironmentSettings，避免CatalogStoreHolder NPE）
         EnvironmentSettings settings = EnvironmentSettings.newInstance().inStreamingMode().build();
         StreamTableEnvironment tableEnv = StreamTableEnvironment.create(env, settings);
-
-        // @Test "0" 表示不过期 | @Prod "7d" 根据业务需要调整
-        //tableEnv.getConfig().set("table.exec.state.ttl", "7d");
-
-        // Source空闲时间：超过这个时间，Source变成idle，不阻塞全局水位线
-        // @Test 10s | @Prod "60s"
-        //tableEnv.getConfig().set("table.exec.source.idle-timeout", "10s");
-
-        // 3、检查点相关设置
         configCheckpoint(env, groupId);
-
         return tableEnv;
     }
 
@@ -48,50 +34,71 @@ public class FlinkBuilder {
         Configuration conf = new Configuration();
         conf.setInteger(RestOptions.PORT, port);
 
-        // Java 17+ 兼容HBase：开放java.nio模块反射访问（HBase 2.x Reflection需求）
         conf.setString("env.java.opts",
                 "--add-opens java.base/java.nio=ALL-UNNAMED " +
                 "--add-opens java.base/sun.nio.ch=ALL-UNNAMED " +
                 "--add-opens java.base/java.lang=ALL-UNNAMED " +
                 "--add-opens java.base/java.util=ALL-UNNAMED");
 
-        // 使用local环境，确保IDEA可以debug到算子内断点
         StreamExecutionEnvironment env = StreamExecutionEnvironment.createLocalEnvironmentWithWebUI(conf);
-
         env.setParallelism(parallelism);
         return env;
     }
 
+    // ==================== 集群模式（StreamPark / Flink Cluster 提交） ====================
+
+    /**
+     * 集群模式下创建 StreamExecutionEnvironment
+     * 使用 getExecutionEnvironment() 自动检测集群环境（由 StreamPark 注入）
+     * Checkpoint 由集群 flink-conf.yaml 统一管理，此处不再额外配置
+     */
+    public static StreamExecutionEnvironment createStreamExecutionEnvironmentForCluster(int parallelism, String groupId) {
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+        env.setParallelism(parallelism);
+        // 集群模式：不覆盖 checkpoint 配置，由集群 flink-conf.yaml 统一管理
+        // 如需覆盖，可通过 StreamPark 动态属性传入
+        if (isCheckpointConfigFromApp()) {
+            configCheckpoint(env, groupId);
+        }
+        return env;
+    }
+
+    /**
+     * 集群模式下创建 StreamTableEnvironment
+     * Checkpoint 由集群 flink-conf.yaml 统一管理
+     */
+    public static StreamTableEnvironment createStreamTableEnvironmentForCluster(int parallelism, String groupId) {
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+        env.setParallelism(parallelism);
+        EnvironmentSettings settings = EnvironmentSettings.newInstance().inStreamingMode().build();
+        StreamTableEnvironment tableEnv = StreamTableEnvironment.create(env, settings);
+        if (isCheckpointConfigFromApp()) {
+            configCheckpoint(env, groupId);
+        }
+        return tableEnv;
+    }
+
+    // ==================== Checkpoint 配置 ====================
+
     public static void configCheckpoint(StreamExecutionEnvironment env, String groupId) {
-        // 检查点相关设置
-        // 开启检查点：EXACTLY_ONCE，@Prod 30s
-        env.enableCheckpointing(30 * 1000, CheckpointingMode.EXACTLY_ONCE); //30s
-
-        // 超时时间：Checkpoint超时直接丢弃
-        env.getCheckpointConfig().setCheckpointTimeout(10 * 60 * 1000); //10min
-
-        // 重试次数：Checkpoint连续重试N次，失败后退出
+        env.enableCheckpointing(30 * 1000, CheckpointingMode.EXACTLY_ONCE);
+        env.getCheckpointConfig().setCheckpointTimeout(10 * 60 * 1000);
         env.getCheckpointConfig().setTolerableCheckpointFailureNumber(3);
-
-        // 重启策略：最大重启10次，每次重启时间间隔10s
         env.setRestartStrategy(RestartStrategies.fixedDelayRestart(10, Time.seconds(10)));
-
-        // 最大并发数：同一时间只允许运行的Checkpoint数量
         env.getCheckpointConfig().setMaxConcurrentCheckpoints(1);
-
-        // 最小间隔：两个检查点之间最小时间间隔
-        env.getCheckpointConfig().setMinPauseBetweenCheckpoints(5 * 1000); //5s
-
-        /**
-         * job取消后检查点是否保留
-         * RETAIN_ON_CANCELLATION：取消后保留检查点
-         * DELETE_ON_CANCELLATION：取消后删除检查点
-         */
-        env.getCheckpointConfig().setExternalizedCheckpointCleanup(CheckpointConfig.ExternalizedCheckpointCleanup.RETAIN_ON_CANCELLATION);
-
-        // @Prod 生产环境必须开启：env.setStateBackend(new EmbeddedRocksDBStateBackend(true));  //RocksDB存储，true表示增量Checkpoint
-        env.setStateBackend(new HashMapStateBackend()); // 内存存储
+        env.getCheckpointConfig().setMinPauseBetweenCheckpoints(5 * 1000);
+        env.getCheckpointConfig().setExternalizedCheckpointCleanup(
+                CheckpointConfig.ExternalizedCheckpointCleanup.RETAIN_ON_CANCELLATION);
+        env.setStateBackend(new HashMapStateBackend());
         env.getCheckpointConfig().setCheckpointStorage(Constant.HDFS_NAME_NODE + groupId + "/");
+    }
+
+    /**
+     * 是否由应用侧管理 Checkpoint（而非集群统一管理）
+     * 通过 JVM 属性 flink.checkpoint.from.app=true 开启
+     */
+    private static boolean isCheckpointConfigFromApp() {
+        return "true".equalsIgnoreCase(System.getProperty("flink.checkpoint.from.app", "false"));
     }
 
 }

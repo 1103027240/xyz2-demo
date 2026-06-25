@@ -24,15 +24,17 @@ public class DimApp extends BaseApp {
         super(Constant.DIM_TABLE_SERVER_PORT, Constant.PARALLELISM, Constant.KAFKA_TOPIC_DB, Constant.DIM_APP);
     }
 
+    public DimApp(boolean isClusterMode) {
+        super(Constant.DIM_TABLE_SERVER_PORT, Constant.PARALLELISM, Constant.KAFKA_TOPIC_DB, Constant.DIM_APP, isClusterMode);
+    }
+
     /**
      * 启动参数
-     * --add-opens java.base/java.nio=ALL-UNNAMED
-     * --add-opens java.base/sun.nio.ch=ALL-UNNAMED
-     * --add-opens java.base/java.lang=ALL-UNNAMED
-     * --add-opens java.base/java.util=ALL-UNNAMED
+     * --cluster  使用集群模式（StreamPark提交时传入）
      */
     public static void main(String[] args) throws Exception {
-        new DimApp().run();
+        boolean isClusterMode = hasClusterFlag(args);
+        new DimApp(isClusterMode).run();
     }
 
     @Override

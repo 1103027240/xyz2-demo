@@ -1,5 +1,6 @@
 package cn.example.common.demo.utils;
 
+import cn.example.common.demo.constant.Constant;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson2.JSONObject;
@@ -22,8 +23,8 @@ public class HBaseUtil {
     //获取HBase连接
     public static Connection getHBaseConnection() throws IOException {
         Configuration config = new Configuration();
-        config.set("hbase.zookeeper.quorum", "zookeeper1,zookeeper2,zookeeper3");
-        config.set("hbase.zookeeper.property.clientPort", "2181");
+        config.set("hbase.zookeeper.quorum", extractQuorum(Constant.HBASE_ZOOKEEPER_QUORUM));
+        config.set("hbase.zookeeper.property.clientPort", extractPort(Constant.HBASE_ZOOKEEPER_QUORUM));
         config.set("zookeeper.znode.parent", "/hbase");
         config.set("hbase.rpc.timeout", String.valueOf(60000));
         config.set("hbase.client.retries.number", String.valueOf(3));
@@ -41,8 +42,8 @@ public class HBaseUtil {
     //获取异步HBase连接
     public static AsyncConnection getHBaseAsyncConnection() {
         Configuration config = new Configuration();
-        config.set("hbase.zookeeper.quorum", "zookeeper1,zookeeper2,zookeeper3");
-        config.set("hbase.zookeeper.property.clientPort", "2181");
+        config.set("hbase.zookeeper.quorum", extractQuorum(Constant.HBASE_ZOOKEEPER_QUORUM));
+        config.set("hbase.zookeeper.property.clientPort", extractPort(Constant.HBASE_ZOOKEEPER_QUORUM));
         config.set("zookeeper.znode.parent", "/hbase");
         config.set("hbase.rpc.timeout", String.valueOf(60000));
         config.set("hbase.client.retries.number", String.valueOf(3));
@@ -191,6 +192,30 @@ public class HBaseUtil {
         } catch (Exception e) {
             throw new RuntimeException("getDimAsync失败: " + ns + ":" + table + "/" + rowKey, e);
         }
+    }
+
+    // ==================== ZK Quorum 解析 ====================
+
+    /**
+     * 从 "host1,host2,host3:2181" 格式提取 host 列表（去掉末尾端口）
+     */
+    private static String extractQuorum(String quorumWithPort) {
+        int lastColon = quorumWithPort.lastIndexOf(':');
+        if (lastColon > 0) {
+            return quorumWithPort.substring(0, lastColon);
+        }
+        return quorumWithPort;
+    }
+
+    /**
+     * 从 "host1,host2,host3:2181" 格式提取端口
+     */
+    private static String extractPort(String quorumWithPort) {
+        int lastColon = quorumWithPort.lastIndexOf(':');
+        if (lastColon > 0 && lastColon < quorumWithPort.length() - 1) {
+            return quorumWithPort.substring(lastColon + 1);
+        }
+        return "2181";
     }
 
 }

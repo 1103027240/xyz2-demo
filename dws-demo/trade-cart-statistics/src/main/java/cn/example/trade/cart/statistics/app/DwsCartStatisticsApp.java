@@ -24,16 +24,17 @@ public class DwsCartStatisticsApp extends BaseApp {
         super(Constant.DWS_CART_STATISTICS_SERVER_PORT, Constant.PARALLELISM, Constant.DWD_CART_ADD, Constant.DWS_CART_STATISTICS);
     }
 
+    public DwsCartStatisticsApp(boolean isClusterMode) {
+        super(Constant.DWS_CART_STATISTICS_SERVER_PORT, Constant.PARALLELISM, Constant.DWD_CART_ADD, Constant.DWS_CART_STATISTICS, isClusterMode);
+    }
+
     /**
      * 启动参数
-     * --add-opens java.base/java.nio=ALL-UNNAMED
-     * --add-opens java.base/sun.nio.ch=ALL-UNNAMED
-     * --add-opens java.base/java.lang=ALL-UNNAMED
-     * --add-opens java.base/java.util=ALL-UNNAMED
-     * 建表语句字符串用VARCHAR，指定字符串大小
+     * --cluster  使用集群模式（StreamPark提交时传入）
      */
     public static void main(String[] args) throws Exception {
-        new DwsCartStatisticsApp().run();
+        boolean isClusterMode = hasClusterFlag(args);
+        new DwsCartStatisticsApp(isClusterMode).run();
     }
 
     @Override

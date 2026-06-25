@@ -21,21 +21,23 @@ public class Constant {
 
 
     // ==================== Redis ====================
-    /** @Test：127.0.0.1 | @Prod：redis-8.2.4 **/
-    public static final String REDIS_HOST = "redis-8.2.4";
+    /** @Local：127.0.0.1（默认） | @StreamPark：redis-8.2.4 **/
+    public static final String REDIS_HOST = System.getProperty("redis.host", "127.0.0.1");
     public static final int REDIS_PORT = 6379;
     public static final long DIM_REDIS_EXPIRE = 24 * 60 * 60;
 
 
     // ==================== MySQL ====================
-    /** @Test：127.0.0.1 | @Prod：mysql8.4.7 **/
-    public static final String MYSQL_HOST = "mysql8.4.7";
-    /** @Test 3316 | @Prod 3306 **/
-    public static final int MYSQL_PORT = 3306;
-    /** @Test：127.0.0.1:3316 | @Prod：mysql8.4.7:3306 **/
-    public static final String MYSQL_URL = "jdbc:mysql://mysql8.4.7:3306/sync_test?useUnicode=true&characterEncoding=utf-8&nullCatalogMeansCurrent=true&useSSL=false&serverTimezone=Asia/Shanghai";
-    public static final String MYSQL_USERNAME = "root";
-    public static final String MYSQL_PASSWORD = "root";
+    /** @Local：127.0.0.1（默认） | @StreamPark：mysql8.4.7 **/
+    public static final String MYSQL_HOST = System.getProperty("mysql.host", "127.0.0.1");
+    /** @Local：3316（默认） | @StreamPark：3306 **/
+    public static final int MYSQL_PORT = Integer.parseInt(System.getProperty("mysql.port", "3316"));
+    /** 由 MYSQL_HOST + MYSQL_PORT 拼接，无需单独配置 **/
+    public static final String MYSQL_URL = "jdbc:mysql://" + MYSQL_HOST + ":" + MYSQL_PORT + "/sync_test?useUnicode=true&characterEncoding=utf-8&nullCatalogMeansCurrent=true&useSSL=false&serverTimezone=Asia/Shanghai";
+    /** @Local：root（默认） | @StreamPark：root **/
+    public static final String MYSQL_USERNAME = System.getProperty("mysql.username", "root");
+    /** @Local：root（默认） | @StreamPark：root **/
+    public static final String MYSQL_PASSWORD = System.getProperty("mysql.password", "root");
     public static final String MYSQL_DATABASE = "sync_test";
     public static final String TABLE_PROCESS_DIM = "table_process_dim";
     public static final String TABLE_CRAT_INFO = "cart_info";
@@ -73,7 +75,8 @@ public class Constant {
 
 
     // ==================== Kafka ====================
-    public static final String KAFKA_BROKERS = "kafka-1:9092,kafka-2:9092,kafka-3:9092";
+    /** @Local：127.0.0.1:9092（默认） | @StreamPark：kafka-1:9092,kafka-2:9092,kafka-3:9092 **/
+    public static final String KAFKA_BROKERS = System.getProperty("kafka.brokers", "127.0.0.1:9092");
     public static final String KAFKA_TOPIC_DB = "canal-topic";
 
 
@@ -90,13 +93,13 @@ public class Constant {
 
 
     // ==================== HDFS ====================
-    /** @Test file:///E:/flink-checkpoint/xyz2-demo/ | @Prod hdfs://namenode:9000/checkpoint/xyz2-demo/ */
-    public static final String HDFS_NAME_NODE = "hdfs://namenode:9000/checkpoint/xyz2-demo/";
+    /** @Local：file:///E:/flink-checkpoint/xyz2-demo/（默认） | @StreamPark：hdfs://namenode:9000/checkpoint/xyz2-demo/ */
+    public static final String HDFS_NAME_NODE = System.getProperty("hdfs.namenode", "file:///E:/flink-checkpoint/xyz2-demo/");
 
 
     // ==================== Flink ====================
-    /** @Test 并行度3 | @Prod 根据集群资源调整，建议 8~16 */
-    public static int PARALLELISM = 3;  //Kafka目前是3分区
+    /** @Local：3（Kafka当前3分区） | @StreamPark：根据集群资源调整，建议 8~16 */
+    public static int PARALLELISM = Integer.getInteger("flink.parallelism", 3);
 
     public static long WATERMARK_DELAY = 3;
     public static long WATERMARK_IDLE_TIMEOUT = 5;
@@ -106,10 +109,10 @@ public class Constant {
 
 
     // ==================== StarRocks ====================
-    /** @Test：jdbc:mysql://127.0.0.1:9030,127.0.0.1:9031,127.0.0.1:9032/ | @Prod：jdbc:mysql://127.0.0.1:9030,127.0.0.1:9031,127.0.0.1:9032/ **/
-    public static final String STARROCKS_JDBC_URL = "jdbc:mysql://starrocks-fe-0:9030,starrocks-fe-1:9030,starrocks-fe-2:9030/";
-    /** @Test：127.0.0.1:8030,127.0.0.1:8031,127.0.0.1:8032 | @Prod：starrocks-fe-0:8030,starrocks-fe-1:8030,starrocks-fe-2:8030 **/
-    public static final String STARROCKS_LOAD_URL = "starrocks-fe-0:8030,starrocks-fe-1:8030,starrocks-fe-2:8030";
+    /** @Local：jdbc:mysql://127.0.0.1:9030,127.0.0.1:9031,127.0.0.1:9032/（默认） | @StreamPark：jdbc:mysql://starrocks-fe-0:9030,starrocks-fe-1:9030,starrocks-fe-2:9030/ **/
+    public static final String STARROCKS_JDBC_URL = System.getProperty("starrocks.jdbc.url", "jdbc:mysql://127.0.0.1:9030,127.0.0.1:9031,127.0.0.1:9032/");
+    /** @Local：127.0.0.1:8030,127.0.0.1:8031,127.0.0.1:8032（默认） | @StreamPark：starrocks-fe-0:8030,starrocks-fe-1:8030,starrocks-fe-2:8030 **/
+    public static final String STARROCKS_LOAD_URL = System.getProperty("starrocks.load.url", "127.0.0.1:8030,127.0.0.1:8031,127.0.0.1:8032");
     public static final String STARROCKS_USERNAME = "root";
     public static final String STARROCKS_PASSWORD = "root";
 
@@ -133,7 +136,8 @@ public class Constant {
 
 
     // ==================== HBase ====================
-    public static final String HBASE_ZOOKEEPER_QUORUM = "zookeeper1,zookeeper2,zookeeper3:2181";
+    /** @Local：127.0.0.1:2181（默认） | @StreamPark：zookeeper1,zookeeper2,zookeeper3:2181 **/
+    public static final String HBASE_ZOOKEEPER_QUORUM = System.getProperty("hbase.zookeeper.quorum", "127.0.0.1:2181");
     public static final String HBASE_NAMESPACE = "XYZ2_DEMO";
 
 
