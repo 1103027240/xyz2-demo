@@ -21,15 +21,19 @@ public class Constant {
 
 
     // ==================== Redis ====================
-    public static final String REDIS_HOST = "127.0.0.1";
+    /** @Test：127.0.0.1 | @Prod：redis-8.2.4 **/
+    public static final String REDIS_HOST = "redis-8.2.4";
     public static final int REDIS_PORT = 6379;
     public static final long DIM_REDIS_EXPIRE = 24 * 60 * 60;
 
 
     // ==================== MySQL ====================
-    public static final String MYSQL_HOST = "127.0.0.1";
-    public static final int MYSQL_PORT = 3316;
-    public static final String MYSQL_URL = "jdbc:mysql://localhost:3316/sync_test?useUnicode=true&characterEncoding=utf-8&nullCatalogMeansCurrent=true&useSSL=false&serverTimezone=Asia/Shanghai";
+    /** @Test：127.0.0.1 | @Prod：mysql8.4.7 **/
+    public static final String MYSQL_HOST = "mysql8.4.7";
+    /** @Test 3316 | @Prod 3306 **/
+    public static final int MYSQL_PORT = 3306;
+    /** @Test：127.0.0.1:3316 | @Prod：mysql8.4.7:3306 **/
+    public static final String MYSQL_URL = "jdbc:mysql://mysql8.4.7:3306/sync_test?useUnicode=true&characterEncoding=utf-8&nullCatalogMeansCurrent=true&useSSL=false&serverTimezone=Asia/Shanghai";
     public static final String MYSQL_USERNAME = "root";
     public static final String MYSQL_PASSWORD = "root";
     public static final String MYSQL_DATABASE = "sync_test";
@@ -86,8 +90,8 @@ public class Constant {
 
 
     // ==================== HDFS ====================
-    /** @Test 本地文件系统 | @Prod hdfs://namenode:9000/checkpoint/xyz2-demo/ */
-    public static final String HDFS_NAME_NODE = "file:///E:/flink-checkpoint/xyz2-demo/";
+    /** @Test file:///E:/flink-checkpoint/xyz2-demo/ | @Prod hdfs://namenode:9000/checkpoint/xyz2-demo/ */
+    public static final String HDFS_NAME_NODE = "hdfs://namenode:9000/checkpoint/xyz2-demo/";
 
 
     // ==================== Flink ====================
@@ -102,24 +106,24 @@ public class Constant {
 
 
     // ==================== StarRocks ====================
-    public static final String STARROCKS_JDBC_URL = "jdbc:mysql://127.0.0.1:9030,127.0.0.1:9031,127.0.0.1:9032/";
-    public static final String STARROCKS_LOAD_URL = "127.0.0.1:8032";
+    /** @Test：jdbc:mysql://127.0.0.1:9030,127.0.0.1:9031,127.0.0.1:9032/ | @Prod：jdbc:mysql://127.0.0.1:9030,127.0.0.1:9031,127.0.0.1:9032/ **/
+    public static final String STARROCKS_JDBC_URL = "jdbc:mysql://starrocks-fe-0:9030,starrocks-fe-1:9030,starrocks-fe-2:9030/";
+    /** @Test：127.0.0.1:8030,127.0.0.1:8031,127.0.0.1:8032 | @Prod：starrocks-fe-0:8030,starrocks-fe-1:8030,starrocks-fe-2:8030 **/
+    public static final String STARROCKS_LOAD_URL = "starrocks-fe-0:8030,starrocks-fe-1:8030,starrocks-fe-2:8030";
     public static final String STARROCKS_USERNAME = "root";
     public static final String STARROCKS_PASSWORD = "root";
 
-    /** StarRocks Sink 语义：at-least-once | exactly-once */
-    // @Test at-least-once 立即可见 | @Prod exactly-once 保证不丢不重
+    /** @Test at-least-once | @Prod exactly-once 保证不丢不重 */
     public static final String STARROCKS_SINK_SEMANTIC = "exactly-once";
-    /** StarRocks Sink 最大重试次数 */
+    /** 最大重试次数 */
     public static final String STARROCKS_SINK_MAX_RETRIES = "3";
-    /** StarRocks Sink 写入模式：append(追加) | upsert(有则更新，无则插入) */
+    /** 写入模式：append(追加) | upsert(有则更新，无则插入) */
     public static final String STARROCKS_SINK_WRITE_MODE = "upsert";
-    /** StarRocks Sink 缓冲区最大行数，达到后触发批量刷新，范围 [64000, 5000000] */
+    /** 缓冲区最大行数，达到后触发批量刷新，范围 [64000, 5000000] */
     public static final String STARROCKS_SINK_BUFFER_FLUSH_MAX_ROWS = "64000";
-    /** StarRocks Sink 缓冲区最大字节数，达到后触发批量刷新 */
+    /** 缓冲区最大字节数，达到后触发批量刷新 */
     public static final String STARROCKS_SINK_BUFFER_FLUSH_MAX_BYTES = "104857600";  // 100MB
-    /** StarRocks Sink 缓冲区刷新间隔（毫秒） @Prod 300000(5分钟) */
-    /** @Test 1s 快速可见 | @Prod 300000(5min) */
+    /** @Test 1s | @Prod 300000(5min) */
     public static final String STARROCKS_SINK_BUFFER_FLUSH_INTERVAL_MS = "1000";
 
     public static final String DATABASE_DWS = "dws";

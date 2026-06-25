@@ -28,7 +28,7 @@ public class DwdCartAddApp extends BaseSQLApp {
         // 1、MysqlCDC读取购物车数据
         tableEnv.executeSql(createDwdCartSourceSQL());
 
-        // 2、过滤加购数据，op_ts(TIMESTAMP(3)) 转 BIGINT(epoch毫秒) 匹配 sink 表 ts 列类型
+        // 2、过滤加购数据
         Table cartTable = tableEnv.sqlQuery("SELECT\n" +
                 "  id,\n" +
                 "  user_id,\n" +

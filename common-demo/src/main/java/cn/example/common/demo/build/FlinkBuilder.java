@@ -51,9 +51,9 @@ public class FlinkBuilder {
         // Java 17+ 兼容HBase：开放java.nio模块反射访问（HBase 2.x Reflection需求）
         conf.setString("env.java.opts",
                 "--add-opens java.base/java.nio=ALL-UNNAMED " +
-                        "--add-opens java.base/sun.nio.ch=ALL-UNNAMED " +
-                        "--add-opens java.base/java.lang=ALL-UNNAMED " +
-                        "--add-opens java.base/java.util=ALL-UNNAMED");
+                "--add-opens java.base/sun.nio.ch=ALL-UNNAMED " +
+                "--add-opens java.base/java.lang=ALL-UNNAMED " +
+                "--add-opens java.base/java.util=ALL-UNNAMED");
 
         // 使用local环境，确保IDEA可以debug到算子内断点
         StreamExecutionEnvironment env = StreamExecutionEnvironment.createLocalEnvironmentWithWebUI(conf);
