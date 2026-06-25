@@ -21,15 +21,15 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="common-demo" options="-parameters" />
-      <module name="dim-demo" options="-parameters" />
+      <module name="common-demo" options="" />
+      <module name="dim-demo" options="" />
       <module name="dwd-demo" options="" />
       <module name="dws-demo" options="" />
-      <module name="trade-cart" options="-parameters" />
-      <module name="trade-cart-statistics" options="-parameters" />
-      <module name="trade-order-detail" options="-parameters" />
-      <module name="trade-province-order-statistics" options="-parameters" />
-      <module name="trade-sku-order-statistics" options="-parameters" />
+      <module name="trade-cart" options="" />
+      <module name="trade-cart-statistics" options="" />
+      <module name="trade-order-detail" options="" />
+      <module name="trade-province-order-statistics" options="" />
+      <module name="trade-sku-order-statistics" options="" />
     </option>
   </component>
 </project>
