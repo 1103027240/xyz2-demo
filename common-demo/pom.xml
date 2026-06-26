@@ -37,6 +37,12 @@
             <artifactId>flink-json</artifactId>
         </dependency>
 
+        <!-- Hadoop (HDFS Checkpoint) -->
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-client</artifactId>
+        </dependency>
+
         <!-- MySQL -->
         <dependency>
             <groupId>com.mysql</groupId>
