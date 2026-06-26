@@ -30,9 +30,9 @@ public class Constant {
 
     // ==================== MySQL ====================
     /** @Local：127.0.0.1 | @StreamPark：mysql8.4.7 **/
-    public static final String MYSQL_HOST = System.getProperty("mysql.host", "127.0.0.1");
+    public static final String MYSQL_HOST = System.getProperty("mysql.host", "mysql8.4.7");
     /** @Local：3316 | @StreamPark：3306 **/
-    public static final int MYSQL_PORT = Integer.parseInt(System.getProperty("mysql.port", "3316"));
+    public static final int MYSQL_PORT = Integer.parseInt(System.getProperty("mysql.port", "3306"));
     /** 由 MYSQL_HOST + MYSQL_PORT 拼接，无需单独配置 **/
     public static final String MYSQL_URL = "jdbc:mysql://" + MYSQL_HOST + ":" + MYSQL_PORT + "/sync_test?useUnicode=true&characterEncoding=utf-8&nullCatalogMeansCurrent=true&useSSL=false&serverTimezone=Asia/Shanghai";
     /** @Local：root | @StreamPark：root **/
