@@ -3,6 +3,7 @@ package cn.example.common.demo.base;
 import cn.example.common.demo.build.FlinkBuilder;
 import cn.example.common.demo.utils.FlinkSourceUtil;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
+import org.apache.flink.api.java.utils.ParameterTool;
 import org.apache.flink.connector.kafka.source.KafkaSource;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
@@ -62,6 +63,19 @@ public abstract class BaseApp {
             }
         }
         return false;
+    }
+
+    /**
+     * 将 --key=value 格式的程序参数注入 System.setProperty
+     * 需在 Constant 类加载前调用，确保 System.getProperty() 能拿到值
+     */
+    protected static void applySystemProperties(String[] args) {
+        if (args == null || args.length == 0) return;
+        ParameterTool params = ParameterTool.fromArgs(args);
+        for (String key : params.toMap().keySet()) {
+            if ("cluster".equals(key)) continue;
+            System.setProperty(key, params.get(key));
+        }
     }
 
 }

@@ -10,7 +10,6 @@ import cn.example.trade.cart.statistics.function.CartKeyedProcessFunction;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
-import org.apache.flink.api.java.utils.ParameterTool;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
@@ -46,15 +45,6 @@ public class DwsCartStatisticsApp extends BaseApp {
         applySystemProperties(args);
         boolean isClusterMode = hasClusterFlag(args);
         new DwsCartStatisticsApp(isClusterMode).run();
-    }
-
-    private static void applySystemProperties(String[] args) {
-        if (args == null || args.length == 0) return;
-        ParameterTool params = ParameterTool.fromArgs(args);
-        for (String key : params.toMap().keySet()) {
-            if ("cluster".equals(key)) continue;
-            System.setProperty(key, params.get(key));
-        }
     }
 
     @Override

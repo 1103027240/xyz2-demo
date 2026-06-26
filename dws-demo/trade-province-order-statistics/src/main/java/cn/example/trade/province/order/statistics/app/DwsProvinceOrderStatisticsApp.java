@@ -9,7 +9,6 @@ import cn.example.trade.province.order.statistics.function.*;
 import cn.example.trade.province.order.statistics.function.dimension.ProvinceAsyncFunction;
 import com.alibaba.fastjson2.JSONObject;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
-import org.apache.flink.api.java.utils.ParameterTool;
 import org.apache.flink.streaming.api.datastream.*;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.windowing.assigners.TumblingProcessingTimeWindows;
@@ -44,15 +43,6 @@ public class DwsProvinceOrderStatisticsApp extends BaseApp {
         applySystemProperties(args);
         boolean isClusterMode = hasClusterFlag(args);
         new DwsProvinceOrderStatisticsApp(isClusterMode).run();
-    }
-
-    private static void applySystemProperties(String[] args) {
-        if (args == null || args.length == 0) return;
-        ParameterTool params = ParameterTool.fromArgs(args);
-        for (String key : params.toMap().keySet()) {
-            if ("cluster".equals(key)) continue;
-            System.setProperty(key, params.get(key));
-        }
     }
 
     @Override

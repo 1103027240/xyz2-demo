@@ -9,7 +9,6 @@ import com.alibaba.fastjson2.JSONObject;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.api.common.state.MapStateDescriptor;
 import org.apache.flink.api.java.tuple.Tuple2;
-import org.apache.flink.api.java.utils.ParameterTool;
 import org.apache.flink.cdc.connectors.mysql.source.MySqlSource;
 import org.apache.flink.streaming.api.datastream.BroadcastStream;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
@@ -46,15 +45,6 @@ public class DimApp extends BaseApp {
         applySystemProperties(args);
         boolean isClusterMode = hasClusterFlag(args);
         new DimApp(isClusterMode).run();
-    }
-
-    private static void applySystemProperties(String[] args) {
-        if (args == null || args.length == 0) return;
-        ParameterTool params = ParameterTool.fromArgs(args);
-        for (String key : params.toMap().keySet()) {
-            if ("cluster".equals(key)) continue;
-            System.setProperty(key, params.get(key));
-        }
     }
 
     @Override

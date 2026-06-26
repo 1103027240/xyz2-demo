@@ -3,7 +3,6 @@ package cn.example.trade.cart.add.app;
 import cn.example.common.demo.base.BaseSQLApp;
 import cn.example.common.demo.constant.Constant;
 import cn.example.common.demo.utils.SQLUtil;
-import org.apache.flink.api.java.utils.ParameterTool;
 import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 
@@ -34,16 +33,6 @@ public class DwdCartAddApp extends BaseSQLApp {
         applySystemProperties(args);
         boolean isClusterMode = hasClusterFlag(args);
         new DwdCartAddApp(isClusterMode).run();
-    }
-
-    private static void applySystemProperties(String[] args) {
-        if (args == null || args.length == 0) return;
-        ParameterTool params = ParameterTool.fromArgs(args);
-        for (String key : params.toMap().keySet()) {
-            // 跳过 --cluster 标志
-            if ("cluster".equals(key)) continue;
-            System.setProperty(key, params.get(key));
-        }
     }
 
     @Override
