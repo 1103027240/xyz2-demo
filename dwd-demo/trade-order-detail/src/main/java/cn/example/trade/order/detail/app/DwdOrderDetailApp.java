@@ -3,6 +3,7 @@ package cn.example.trade.order.detail.app;
 import cn.example.common.demo.base.BaseSQLApp;
 import cn.example.common.demo.constant.Constant;
 import cn.example.common.demo.utils.SQLUtil;
+import org.apache.flink.api.java.utils.ParameterTool;
 import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 import java.time.Duration;
@@ -18,12 +19,31 @@ public class DwdOrderDetailApp extends BaseSQLApp {
     }
 
     /**
-     * 启动参数
-     * --cluster  使用集群模式（StreamPark提交时传入）
+     * 启动参数（key=value 格式自动注入 System.setProperty）
+     * --cluster                          使用集群模式
+     * --mysql.host=${mysql.host}         MySQL主机
+     * --mysql.port=${mysql.port}         MySQL端口
+     * --redis.host=${redis.host}         Redis主机
+     * --kafka.brokers=${kafka.brokers}   Kafka地址
+     * --starrocks.jdbc.url=...           StarRocks JDBC
+     * --starrocks.load.url=...           StarRocks Load
+     * --hbase.zookeeper.quorum=...       HBase ZK
+     * --hdfs.namenode=...                HDFS地址
+     * --mysql.username=... --mysql.password=... 等
      */
     public static void main(String[] args) throws Exception {
+        applySystemProperties(args);
         boolean isClusterMode = hasClusterFlag(args);
         new DwdOrderDetailApp(isClusterMode).run();
+    }
+
+    private static void applySystemProperties(String[] args) {
+        if (args == null || args.length == 0) return;
+        ParameterTool params = ParameterTool.fromArgs(args);
+        for (String key : params.toMap().keySet()) {
+            if ("cluster".equals(key)) continue;
+            System.setProperty(key, params.get(key));
+        }
     }
 
     @Override
