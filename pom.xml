@@ -230,10 +230,11 @@
         </dependency>
 
         <!-- ==================== Hadoop ==================== -->
+        <!-- 注意：scope compile 会将 hadoop-client 打入 fat jar -->
+        <!-- StreamPark 集群没有预装 Hadoop，必须打入 fat jar -->
         <dependency>
             <groupId>org.apache.hadoop</groupId>
             <artifactId>hadoop-client</artifactId>
-            <scope>provided</scope>
             <exclusions>
                 <exclusion>
                     <groupId>org.slf4j</groupId>
