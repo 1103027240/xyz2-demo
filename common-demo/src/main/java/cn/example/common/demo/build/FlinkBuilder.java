@@ -14,7 +14,7 @@ import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 
 public class FlinkBuilder {
 
-    // ==================== 本地模式（IDEA开发调试） ====================
+    // ==================== 本地模式 ====================
 
     public static StreamExecutionEnvironment createStreamExecutionEnvironment(int port, int parallelism, String groupId) {
         StreamExecutionEnvironment env = createBasicStreamExecutionEnvironment(port, parallelism);
@@ -45,36 +45,21 @@ public class FlinkBuilder {
         return env;
     }
 
-    // ==================== 集群模式（StreamPark / Flink Cluster 提交） ====================
+    // ==================== 集群模式 ====================
 
-    /**
-     * 集群模式下创建 StreamExecutionEnvironment
-     * 使用 getExecutionEnvironment() 自动检测集群环境（由 StreamPark 注入）
-     * Checkpoint 由集群 flink-conf.yaml 统一管理，此处不再额外配置
-     */
     public static StreamExecutionEnvironment createStreamExecutionEnvironmentForCluster(int parallelism, String groupId) {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.setParallelism(parallelism);
-        // 集群模式：不覆盖 checkpoint 配置，由集群 flink-conf.yaml 统一管理
-        // 如需覆盖，可通过 StreamPark 动态属性传入
-        if (isCheckpointConfigFromApp()) {
-            configCheckpoint(env, groupId);
-        }
+        configCheckpoint(env, groupId);
         return env;
     }
 
-    /**
-     * 集群模式下创建 StreamTableEnvironment
-     * Checkpoint 由集群 flink-conf.yaml 统一管理
-     */
     public static StreamTableEnvironment createStreamTableEnvironmentForCluster(int parallelism, String groupId) {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.setParallelism(parallelism);
         EnvironmentSettings settings = EnvironmentSettings.newInstance().inStreamingMode().build();
         StreamTableEnvironment tableEnv = StreamTableEnvironment.create(env, settings);
-        if (isCheckpointConfigFromApp()) {
-            configCheckpoint(env, groupId);
-        }
+        configCheckpoint(env, groupId);
         return tableEnv;
     }
 
@@ -90,14 +75,6 @@ public class FlinkBuilder {
         env.getCheckpointConfig().setExternalizedCheckpointCleanup(CheckpointConfig.ExternalizedCheckpointCleanup.RETAIN_ON_CANCELLATION);
         env.setStateBackend(new HashMapStateBackend());
         env.getCheckpointConfig().setCheckpointStorage(Constant.HDFS_NAME_NODE + groupId + "/");
-    }
-
-    /**
-     * 是否由应用侧管理 Checkpoint（而非集群统一管理）
-     * 通过 JVM 属性 flink.checkpoint.from.app=true 开启
-     */
-    private static boolean isCheckpointConfigFromApp() {
-        return "true".equalsIgnoreCase(System.getProperty("flink.checkpoint.from.app", "false"));
     }
 
 }

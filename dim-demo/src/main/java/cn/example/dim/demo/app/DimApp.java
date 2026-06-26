@@ -20,31 +20,12 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
  */
 public class DimApp extends BaseApp {
 
-    public DimApp() {
-        super(Constant.DIM_TABLE_SERVER_PORT, Constant.PARALLELISM, Constant.KAFKA_TOPIC_DB, Constant.DIM_APP);
-    }
-
     public DimApp(boolean isClusterMode) {
         super(Constant.DIM_TABLE_SERVER_PORT, Constant.PARALLELISM, Constant.KAFKA_TOPIC_DB, Constant.DIM_APP, isClusterMode);
     }
 
-    /**
-     * 启动参数（key=value 格式自动注入 System.setProperty）
-     * --cluster                          使用集群模式
-     * --mysql.host=${mysql.host}         MySQL主机
-     * --mysql.port=${mysql.port}         MySQL端口
-     * --redis.host=${redis.host}         Redis主机
-     * --kafka.brokers=${kafka.brokers}   Kafka地址
-     * --starrocks.jdbc.url=...           StarRocks JDBC
-     * --starrocks.load.url=...           StarRocks Load
-     * --hbase.zookeeper.quorum=...       HBase ZK
-     * --hdfs.namenode=...                HDFS地址
-     * --mysql.username=... --mysql.password=... 等
-     */
     public static void main(String[] args) throws Exception {
-        applySystemProperties(args);
-        boolean isClusterMode = hasClusterFlag(args);
-        new DimApp(isClusterMode).run();
+        new DimApp(Constant.IS_CLUSTER_MODE).run();
     }
 
     @Override

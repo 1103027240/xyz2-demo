@@ -18,31 +18,12 @@ import java.util.concurrent.TimeUnit;
 
 public class DwsProvinceOrderStatisticsApp extends BaseApp {
 
-    public DwsProvinceOrderStatisticsApp() {
-        super(Constant.DWS_PROVINCE_ORDER_STATISTICS_SERVER_PORT, Constant.PARALLELISM, Constant.DWD_ORDER_DETAIL, Constant.DWS_TRADE_PROVINCE_ORDER_STATISTICS);
-    }
-
     public DwsProvinceOrderStatisticsApp(boolean isClusterMode) {
         super(Constant.DWS_PROVINCE_ORDER_STATISTICS_SERVER_PORT, Constant.PARALLELISM, Constant.DWD_ORDER_DETAIL, Constant.DWS_TRADE_PROVINCE_ORDER_STATISTICS, isClusterMode);
     }
 
-    /**
-     * 启动参数（key=value 格式自动注入 System.setProperty）
-     * --cluster                          使用集群模式
-     * --mysql.host=${mysql.host}         MySQL主机
-     * --mysql.port=${mysql.port}         MySQL端口
-     * --redis.host=${redis.host}         Redis主机
-     * --kafka.brokers=${kafka.brokers}   Kafka地址
-     * --starrocks.jdbc.url=...           StarRocks JDBC
-     * --starrocks.load.url=...           StarRocks Load
-     * --hbase.zookeeper.quorum=...       HBase ZK
-     * --hdfs.namenode=...                HDFS地址
-     * --mysql.username=... --mysql.password=... 等
-     */
     public static void main(String[] args) throws Exception {
-        applySystemProperties(args);
-        boolean isClusterMode = hasClusterFlag(args);
-        new DwsProvinceOrderStatisticsApp(isClusterMode).run();
+        new DwsProvinceOrderStatisticsApp(Constant.IS_CLUSTER_MODE).run();
     }
 
     @Override

@@ -8,31 +8,12 @@ import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 
 public class DwdCartAddApp extends BaseSQLApp {
 
-    public DwdCartAddApp() {
-        super(Constant.DWD_CART_ADD_SERVER_PORT, Constant.PARALLELISM, Constant.DWD_CART_ADD);
-    }
-
     public DwdCartAddApp(boolean isClusterMode) {
         super(Constant.DWD_CART_ADD_SERVER_PORT, Constant.PARALLELISM, Constant.DWD_CART_ADD, isClusterMode);
     }
 
-    /**
-     * 启动参数（key=value 格式自动注入 System.setProperty）
-     * --cluster                          使用集群模式
-     * --mysql.host=${mysql.host}         MySQL主机
-     * --mysql.port=${mysql.port}         MySQL端口
-     * --redis.host=${redis.host}         Redis主机
-     * --kafka.brokers=${kafka.brokers}   Kafka地址
-     * --starrocks.jdbc.url=...           StarRocks JDBC
-     * --starrocks.load.url=...           StarRocks Load
-     * --hbase.zookeeper.quorum=...       HBase ZK
-     * --hdfs.namenode=...                HDFS地址
-     * --mysql.username=... --mysql.password=... 等
-     */
     public static void main(String[] args) throws Exception {
-        applySystemProperties(args);
-        boolean isClusterMode = hasClusterFlag(args);
-        new DwdCartAddApp(isClusterMode).run();
+        new DwdCartAddApp(Constant.IS_CLUSTER_MODE).run();
     }
 
     @Override
