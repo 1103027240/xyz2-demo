@@ -20,12 +20,12 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
  */
 public class DimApp extends BaseApp {
 
-    public DimApp(boolean isClusterMode) {
-        super(Constant.DIM_TABLE_SERVER_PORT, Constant.PARALLELISM, Constant.KAFKA_TOPIC_DB, Constant.DIM_APP, isClusterMode);
+    public DimApp() {
+        super(Constant.DIM_TABLE_SERVER_PORT, Constant.PARALLELISM, Constant.KAFKA_TOPIC_DB, Constant.DIM_APP);
     }
 
     public static void main(String[] args) throws Exception {
-        new DimApp(Constant.IS_CLUSTER_MODE).run();
+        new DimApp().run();
     }
 
     @Override

@@ -8,12 +8,12 @@ import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 
 public class DwdCartAddApp extends BaseSQLApp {
 
-    public DwdCartAddApp(boolean isClusterMode) {
-        super(Constant.DWD_CART_ADD_SERVER_PORT, Constant.PARALLELISM, Constant.DWD_CART_ADD, isClusterMode);
+    public DwdCartAddApp() {
+        super(Constant.DWD_CART_ADD_SERVER_PORT, Constant.PARALLELISM, Constant.DWD_CART_ADD);
     }
 
     public static void main(String[] args) throws Exception {
-        new DwdCartAddApp(Constant.IS_CLUSTER_MODE).run();
+        new DwdCartAddApp().run();
     }
 
     @Override

@@ -47,21 +47,21 @@ public class FlinkBuilder {
 
     // ==================== 集群模式 ====================
 
-    public static StreamExecutionEnvironment createStreamExecutionEnvironmentForCluster(int parallelism, String groupId) {
-        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-        env.setParallelism(parallelism);
-        configCheckpoint(env, groupId);
-        return env;
-    }
+    // public static StreamExecutionEnvironment createStreamExecutionEnvironmentForCluster(int parallelism, String groupId) {
+    //     StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+    //     env.setParallelism(parallelism);
+    //     configCheckpoint(env, groupId);
+    //     return env;
+    // }
 
-    public static StreamTableEnvironment createStreamTableEnvironmentForCluster(int parallelism, String groupId) {
-        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-        env.setParallelism(parallelism);
-        EnvironmentSettings settings = EnvironmentSettings.newInstance().inStreamingMode().build();
-        StreamTableEnvironment tableEnv = StreamTableEnvironment.create(env, settings);
-        configCheckpoint(env, groupId);
-        return tableEnv;
-    }
+    // public static StreamTableEnvironment createStreamTableEnvironmentForCluster(int parallelism, String groupId) {
+    //     StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+    //     env.setParallelism(parallelism);
+    //     EnvironmentSettings settings = EnvironmentSettings.newInstance().inStreamingMode().build();
+    //     StreamTableEnvironment tableEnv = StreamTableEnvironment.create(env, settings);
+    //     configCheckpoint(env, groupId);
+    //     return tableEnv;
+    // }
 
     // ==================== Checkpoint 配置 ====================
 
@@ -74,7 +74,9 @@ public class FlinkBuilder {
         env.getCheckpointConfig().setMinPauseBetweenCheckpoints(5 * 1000);
         env.getCheckpointConfig().setExternalizedCheckpointCleanup(CheckpointConfig.ExternalizedCheckpointCleanup.RETAIN_ON_CANCELLATION);
         env.setStateBackend(new HashMapStateBackend());
-        env.getCheckpointConfig().setCheckpointStorage(Constant.HDFS_NAME_NODE + groupId + "/");
+        // 本地：file:///E:/flink-checkpoint/xyz2-demo/{groupId}/
+        // 生产：hdfs://namenode:9000/checkpoint/xyz2-demo/{groupId}/
+        env.getCheckpointConfig().setCheckpointStorage(Constant.CHECKPOINT_LOCAL_PATH + groupId + "/");
     }
 
 }

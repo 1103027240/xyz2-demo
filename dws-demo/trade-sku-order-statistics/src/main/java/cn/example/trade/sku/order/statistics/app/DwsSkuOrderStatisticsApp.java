@@ -20,12 +20,12 @@ import java.util.concurrent.TimeUnit;
 
 public class DwsSkuOrderStatisticsApp extends BaseApp {
 
-    public DwsSkuOrderStatisticsApp(boolean isClusterMode) {
-        super(Constant.DWS_SKU_ORDER_STATISTICS_SERVER_PORT, Constant.PARALLELISM, Constant.DWD_ORDER_DETAIL, Constant.DWS_TRADE_SKU_ORDER_STATISTICS, isClusterMode);
+    public DwsSkuOrderStatisticsApp() {
+        super(Constant.DWS_SKU_ORDER_STATISTICS_SERVER_PORT, Constant.PARALLELISM, Constant.DWD_ORDER_DETAIL, Constant.DWS_TRADE_SKU_ORDER_STATISTICS);
     }
 
     public static void main(String[] args) throws Exception {
-        new DwsSkuOrderStatisticsApp(Constant.IS_CLUSTER_MODE).run();
+        new DwsSkuOrderStatisticsApp().run();
     }
 
     @Override

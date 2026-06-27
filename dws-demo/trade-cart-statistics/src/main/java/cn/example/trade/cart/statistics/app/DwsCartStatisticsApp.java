@@ -20,12 +20,12 @@ import java.time.Duration;
 
 public class DwsCartStatisticsApp extends BaseApp {
 
-    public DwsCartStatisticsApp(boolean isClusterMode) {
-        super(Constant.DWS_CART_STATISTICS_SERVER_PORT, Constant.PARALLELISM, Constant.DWD_CART_ADD, Constant.DWS_CART_STATISTICS, isClusterMode);
+    public DwsCartStatisticsApp() {
+        super(Constant.DWS_CART_STATISTICS_SERVER_PORT, Constant.PARALLELISM, Constant.DWD_CART_ADD, Constant.DWS_CART_STATISTICS);
     }
 
     public static void main(String[] args) throws Exception {
-        new DwsCartStatisticsApp(Constant.IS_CLUSTER_MODE).run();
+        new DwsCartStatisticsApp().run();
     }
 
     @Override

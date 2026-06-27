@@ -3,7 +3,7 @@ package cn.example.common.demo.constant;
 /**
  * 全局配置常量
  * @Test — 当前值
- * @Prod — 生产推荐值
+ * @StreamPark — 生产推荐值
  */
 public class Constant {
 
@@ -22,22 +22,20 @@ public class Constant {
 
 
     // ==================== Redis ====================
-    /** 生产 | @Local：127.0.0.1 **/
-    public static final String REDIS_HOST = "redis-8.2.4";
+    /** @StreamPark：redis-8.2.4 **/
+    public static final String REDIS_HOST = "127.0.0.1";
     public static final int REDIS_PORT = 6379;
     public static final long DIM_REDIS_EXPIRE = 24 * 60 * 60;
 
 
     // ==================== MySQL ====================
-    /** 生产 | @Local：127.0.0.1 | @StreamPark：mysql8.4.7 **/
-    public static final String MYSQL_HOST = "mysql8.4.7";
-    /** 生产 | @Local：3316 | @StreamPark：3306 **/
-    public static final int MYSQL_PORT = 3306;
-    /** 由 MYSQL_HOST + MYSQL_PORT 拼接，无需单独配置 **/
+    /** @StreamPark：mysql8.4.7 **/
+    public static final String MYSQL_HOST = "127.0.0.1";
+    /** @StreamPark：3306 **/
+    public static final int MYSQL_PORT = 3316;
+    /** 由 MYSQL_HOST + MYSQL_PORT 拼接 **/
     public static final String MYSQL_URL = "jdbc:mysql://" + MYSQL_HOST + ":" + MYSQL_PORT + "/sync_test?useUnicode=true&characterEncoding=utf-8&nullCatalogMeansCurrent=true&useSSL=false&serverTimezone=Asia/Shanghai";
-    /** 生产 | @Local：root **/
     public static final String MYSQL_USERNAME = "root";
-    /** 生产 | @Local：root **/
     public static final String MYSQL_PASSWORD = "root";
     public static final String MYSQL_DATABASE = "sync_test";
     public static final String TABLE_PROCESS_DIM = "table_process_dim";
@@ -76,7 +74,6 @@ public class Constant {
 
 
     // ==================== Kafka ====================
-    /** 生产 | @Local：kafka-1:9092,kafka-2:9092,kafka-3:9092 **/
     public static final String KAFKA_BROKERS = "kafka-1:9092,kafka-2:9092,kafka-3:9092";
     public static final String KAFKA_TOPIC_DB = "canal-topic";
 
@@ -90,20 +87,16 @@ public class Constant {
     public static final String KAFKA_CDC_INSERT = "INSERT";
     public static final String KAFKA_CDC_UPDATE = "UPDATE";
     public static final String KAFKA_CDC_DELETE = "DELETE";
-    public static final String KAFKA_CDC_BOOTSTRAP_INSERT = "BOOTSTRAP-INSERT";   //全量同步
+    public static final String KAFKA_CDC_BOOTSTRAP_INSERT = "BOOTSTRAP-INSERT";  //全量同步
 
 
-    // ==================== HDFS ====================
-    /** 生产 | @Local：file:///E:/flink-checkpoint/xyz2-demo/ **/
-    public static final String HDFS_NAME_NODE = "hdfs://namenode:9000/checkpoint/xyz2-demo/";
+    // ==================== Checkpoint 存储路径 ====================
+    /** @StreamPark：hdfs://namenode:9000/checkpoint/xyz2-demo/ **/
+    public static final String CHECKPOINT_LOCAL_PATH = "file:///E:/flink-checkpoint/xyz2-demo/";
 
 
     // ==================== Flink ====================
-    /** true=集群模式 | false=单机模式 **/
-    public static final boolean IS_CLUSTER_MODE = true;
-    /** 生产 | @Local：3 **/
     public static int PARALLELISM = 3;
-
     public static long WATERMARK_DELAY = 3;
     public static long WATERMARK_IDLE_TIMEOUT = 5;
     public static long WINDOW_SIZE = 10;
@@ -112,10 +105,10 @@ public class Constant {
 
 
     // ==================== StarRocks ====================
-    /** 生产 | @Local：jdbc:mysql://127.0.0.1:9030,127.0.0.1:9031,127.0.0.1:9032/ **/
-    public static final String STARROCKS_JDBC_URL = "jdbc:mysql://starrocks-fe-0:9030,starrocks-fe-1:9030,starrocks-fe-2:9030/";
-    /** 生产 | @Local：127.0.0.1:8032 **/
-    public static final String STARROCKS_LOAD_URL = "starrocks-fe-0:8030,starrocks-fe-1:8030,starrocks-fe-2:8030";
+    /** @StreamPark：jdbc:mysql://starrocks-fe-0:9030,starrocks-fe-1:9030,starrocks-fe-2:9030/ **/
+    public static final String STARROCKS_JDBC_URL = "jdbc:mysql://127.0.0.1:9030,127.0.0.1:9031,127.0.0.1:9032/";
+    /** @StreamPark：starrocks-fe-0:8030,starrocks-fe-1:8030,starrocks-fe-2:8030 **/
+    public static final String STARROCKS_LOAD_URL = "127.0.0.1:8032";
     public static final String STARROCKS_USERNAME = "root";
     public static final String STARROCKS_PASSWORD = "root";
 
@@ -139,7 +132,6 @@ public class Constant {
 
 
     // ==================== HBase ====================
-    /** 生产 | @Local：zookeeper1,zookeeper2,zookeeper3:2181 **/
     public static final String HBASE_ZOOKEEPER_QUORUM = "zookeeper1,zookeeper2,zookeeper3:2181";
     public static final String HBASE_NAMESPACE = "XYZ2_DEMO";
 

@@ -18,12 +18,12 @@ import java.util.concurrent.TimeUnit;
 
 public class DwsProvinceOrderStatisticsApp extends BaseApp {
 
-    public DwsProvinceOrderStatisticsApp(boolean isClusterMode) {
-        super(Constant.DWS_PROVINCE_ORDER_STATISTICS_SERVER_PORT, Constant.PARALLELISM, Constant.DWD_ORDER_DETAIL, Constant.DWS_TRADE_PROVINCE_ORDER_STATISTICS, isClusterMode);
+    public DwsProvinceOrderStatisticsApp() {
+        super(Constant.DWS_PROVINCE_ORDER_STATISTICS_SERVER_PORT, Constant.PARALLELISM, Constant.DWD_ORDER_DETAIL, Constant.DWS_TRADE_PROVINCE_ORDER_STATISTICS);
     }
 
     public static void main(String[] args) throws Exception {
-        new DwsProvinceOrderStatisticsApp(Constant.IS_CLUSTER_MODE).run();
+        new DwsProvinceOrderStatisticsApp().run();
     }
 
     @Override

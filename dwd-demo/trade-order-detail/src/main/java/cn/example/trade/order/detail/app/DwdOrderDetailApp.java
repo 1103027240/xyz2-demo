@@ -9,12 +9,12 @@ import java.time.Duration;
 
 public class DwdOrderDetailApp extends BaseSQLApp {
 
-    public DwdOrderDetailApp(boolean isClusterMode) {
-        super(Constant.DWD_ORDER_DETAIL_SERVER_PORT, Constant.PARALLELISM, Constant.DWD_ORDER_DETAIL, isClusterMode);
+    public DwdOrderDetailApp() {
+        super(Constant.DWD_ORDER_DETAIL_SERVER_PORT, Constant.PARALLELISM, Constant.DWD_ORDER_DETAIL);
     }
 
     public static void main(String[] args) throws Exception {
-        new DwdOrderDetailApp(Constant.IS_CLUSTER_MODE).run();
+        new DwdOrderDetailApp().run();
     }
 
     @Override
